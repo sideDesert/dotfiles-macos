@@ -1,0 +1,35 @@
+#!/bin/bash
+
+source "$CONFIG_DIR/colors.sh"
+sketchybar --add event aerospace_workspace_change
+
+# 2. Define the workspaces (use your specific names/numbers here)
+SPACE_SIDS=(􀎭 􀘸 􀤮 􀪏 􀍟 􀓕 1 2 3 4 5)
+
+for sid in "${SPACE_SIDS[@]}"; do
+  sketchybar --add item space.$sid left \
+    --subscribe space.$sid aerospace_workspace_change \
+    --set space.$sid \
+    label="$sid" \
+    icon.drawing=off \
+    background.color=$ACCENT_COLOR \
+    background.corner_radius=5 \
+    background.height=20 \
+    background.drawing=off \
+    script="$PLUGIN_DIR/spaces.sh $sid" \
+    click_script="aerospace workspace $sid"
+done
+sketchybar --add item space_separator left \
+  --set space_separator padding_left=15 \
+  icon="􀆊" \
+  icon.color=$BAR_COLOR \
+  icon.font="SF Pro:Semibold:12.0" \
+  icon.padding_left=6 \
+  label.drawing=on \
+  label.font="SF Pro:Normal:13.0" \
+  background.drawing=on \
+  background.color=$ACCENT_COLOR \
+  background.corner_radius=3 \
+  background.height=18 \
+  script="$PLUGIN_DIR/space_window.sh" \
+  --subscribe space_separator aerospace_workspace_change

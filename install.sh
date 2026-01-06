@@ -6,6 +6,7 @@ set -euo pipefail
 # --------------------------------------------------
 DOTFILES_DIR="$(cd "$(dirname "$0")" && pwd)"
 CONFIG_DIR="$HOME/.config"
+APPLICATIONS_DIR="/Applications"
 
 mkdir -p "$CONFIG_DIR"
 
@@ -17,7 +18,21 @@ install_formula() {
 }
 
 install_cask() {
-  brew list --cask "$1" >/dev/null 2>&1 || brew install --cask "$1"
+  local token="$1"
+  local app_name="$2"
+
+  # Skip if Homebrew already manages it
+  if brew list --cask "$token" >/dev/null 2>&1; then
+    return
+  fi
+
+  # Skip if app already exists on disk
+  if [ -d "$APPLICATIONS_DIR/$app_name.app" ]; then
+    echo "ℹ️  $app_name already exists, skipping install"
+    return
+  fi
+
+  brew install --cask "$token"
 }
 
 link() {
@@ -25,31 +40,32 @@ link() {
   local dst="$CONFIG_DIR/$1"
 
   if [ -e "$dst" ] && [ ! -L "$dst" ]; then
-    echo "⚠️  Backing up existing config: $dst -> $dst.bak"
     mv "$dst" "$dst.bak"
   fi
 
-  echo "🔗 Linking $dst -> $src"
   ln -sfn "$src" "$dst"
 }
 
 # --------------------------------------------------
-# Install packages
+# Taps
 # --------------------------------------------------
-install_cask aerospace
+brew tap nikitabobko/tap
+brew tap FelixKratz/formulae
+
+# --------------------------------------------------
+# Installs
+# --------------------------------------------------
+install_cask nikitabobko/tap/aerospace AeroSpace
 install_formula btop
 install_formula neovim
 install_formula tmux
-install_cask raycast
-
-brew tap FelixKratz/formulae
+install_cask raycast Raycast
 install_formula sketchybar
-
 install_formula yazi
-install_cask zed
+install_cask zed Zed
 
 # --------------------------------------------------
-# Create symlinks
+# Symlinks
 # --------------------------------------------------
 link aerospace
 link nvim
@@ -58,6 +74,5 @@ link raycast
 link sketchybar
 link yazi
 link zed
-link .tmux.conf
 
-echo "✅ Dotfiles installation complete"
+echo "✅ Done"

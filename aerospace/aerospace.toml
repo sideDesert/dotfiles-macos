@@ -75,12 +75,13 @@ on-mode-changed = []
 #                 https://nikitabobko.github.io/AeroSpace/guide#assign-workspaces-to-monitors
 
 [gaps]
-    inner.horizontal = 8
-    inner.vertical =   8
-    outer.left =       8
-    outer.bottom =     8
-    outer.top =        8
-    outer.right =      8
+  inner.horizontal = 8
+  inner.vertical   = 8
+  outer.left       = 8
+  outer.bottom     = 8
+  outer.right      = 8
+
+  outer.top = [{ monitor.'built-in' = 8 }, 32]
 
 # 'main' binding mode declaration
 # See: https://nikitabobko.github.io/AeroSpace/guide#binding-modes
@@ -200,3 +201,15 @@ on-mode-changed = []
   run=[
   "layout floating"
 ]
+
+[[on-window-detected]]
+  if.app-id = "com.eltima.cmd1"
+  run = ["layout floating"]
+
+[[on-window-detected]]
+  if.app-id = "com.apple.finder"
+  run = ["layout floating"]
+
+[[on-window-detected]]
+  if.app-id = "com.binarynights.ForkLift"
+  run = ["layout floating"]

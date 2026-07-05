@@ -1,16 +1,71 @@
-// Zed settings
-//
-// For information on how to configure Zed, see the Zed
-// documentation: https://zed.dev/docs/configuring-zed
-//
-// To see all of Zed's default settings without changing your
-// custom settings, run `zed: open default settings` from the
-// command palette (cmd-shift-p / ctrl-shift-p)
 {
-  "icon_theme": "Bearded Icon Theme",
+  "inline_code_actions": false,
+  "show_completion_documentation": false,
+  "ensure_final_newline_on_save": false,
+  "remove_trailing_whitespace_on_save": false,
+  "format_on_save": "on",
+  "inlay_hints": {
+    "show_value_hints": false,
+    "enabled": true
+  },
+  "session": {
+    "trust_all_worktrees": false
+  },
+  "base_keymap": "VSCode",
+  "diff_view_style": "unified",
+  "cli_default_open_behavior": "new_window",
+  "project_panel": {
+    "dock": "left"
+  },
+  "outline_panel": {
+    "dock": "left"
+  },
+  "collaboration_panel": {
+    "dock": "left"
+  },
+  "agent": {
+    "sidebar_side": "right",
+    "dock": "right",
+    "favorite_models": [],
+    "model_parameters": []
+  },
+  "git_panel": {
+    "tree_view": true,
+    "dock": "left"
+  },
+  "agent_servers": {
+    "codex-acp": {
+      "default_config_options": {
+        "model": "gpt-5.4-mini"
+      },
+      "type": "registry"
+    },
+    "claude-acp": {
+      "type": "registry"
+    }
+  },
+  "ssh_connections": [
+    {
+      "host": "45.79.123.104",
+      "username": "root",
+      "args": [],
+      "projects": []
+    }
+  ],
+  "show_edit_predictions": false,
+  "icon_theme": "Colored Zed Icons Theme Dark",
   "vim_mode": true,
   "ui_font_size": 16,
   "buffer_font_size": 15,
-  "theme": "One Dark Pro",
+  "theme": "Ayu Dark",
   "relative_line_numbers": true,
+  "lsp": {
+    "deno": {
+      "settings": {
+        "deno": {
+          "enable": true
+        }
+      }
+    }
+  }
 }

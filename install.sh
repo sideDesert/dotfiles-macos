@@ -35,15 +35,32 @@ install_cask() {
   brew install --cask "$token"
 }
 
-link() {
-  local src="$DOTFILES_DIR/$1"
-  local dst="$CONFIG_DIR/$1"
+backup_and_link() {
+  local source_path="$1"
+  local destination_path="$2"
 
-  if [ -e "$dst" ] && [ ! -L "$dst" ]; then
-    mv "$dst" "$dst.bak"
+  if [ -e "$destination_path" ] && [ ! -L "$destination_path" ]; then
+    local backup_path_prefix="$destination_path.bak.$(date +%Y%m%d%H%M%S)"
+    local backup_path="$backup_path_prefix"
+    local backup_number=1
+
+    while [ -e "$backup_path" ] || [ -L "$backup_path" ]; do
+      backup_path="$backup_path_prefix.$backup_number"
+      backup_number=$((backup_number + 1))
+    done
+
+    mv "$destination_path" "$backup_path"
   fi
 
-  ln -sfn "$src" "$dst"
+  ln -sfn "$source_path" "$destination_path"
+}
+
+link_config() {
+  backup_and_link "$DOTFILES_DIR/$1" "$CONFIG_DIR/$1"
+}
+
+link_home_file() {
+  backup_and_link "$DOTFILES_DIR/$1" "$HOME/$1"
 }
 
 # --------------------------------------------------
@@ -67,12 +84,15 @@ install_cask zed Zed
 # --------------------------------------------------
 # Symlinks
 # --------------------------------------------------
-link aerospace
-link nvim
-link tmux
-link raycast
-link sketchybar
-link yazi
-link zed
+link_config aerospace
+link_config btop
+link_config doom
+link_config nvim
+link_config raycast
+link_config sketchybar
+link_config television
+link_config yazi
+link_config zed
+link_home_file .tmux.conf
 
 echo "✅ Done"

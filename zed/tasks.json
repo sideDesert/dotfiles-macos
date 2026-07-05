@@ -15,28 +15,32 @@
   },
   {
     "label": "find-in-files",
-    "command": "zed \"$(tv files)\"",
+    "command": "zed \"$(tv files --source-command \"fd --hidden --exclude .git\")\"",
     "hide": "always",
     "allow_concurrent_runs": true,
     "use_new_terminal": true,
     "shell": {
       "with_arguments": {
         "program": "zsh",
-        "args": ["--no-rcs"],
+        "args": [
+          "--no-rcs"
+        ],
       },
     },
   },
   {
     "label": "doc",
     "command": "man $(man -k . | tv | awk -F'[()]' '{print $2, $1}')",
-
     "hide": "always",
     "allow_concurrent_runs": true,
     "use_new_terminal": true,
     "shell": {
       "with_arguments": {
         "program": "zsh",
-        "args": ["-i", "-c"],
+        "args": [
+          "-i",
+          "-c"
+        ],
       },
     },
   },
@@ -49,7 +53,10 @@
     "shell": {
       "with_arguments": {
         "program": "zsh",
-        "args": ["-i", "-c"],
+        "args": [
+          "-i",
+          "-c"
+        ],
       },
     },
   },

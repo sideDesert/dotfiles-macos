@@ -1,17 +1,5 @@
 [
   {
-    "context": "Workspace",
-    "bindings": {
-      "cmd-p": [
-        "task::Spawn",
-        {
-          "task_name": "find-in-files",
-          "reveal_target": "center",
-        },
-      ],
-    },
-  },
-  {
     "context": "Editor && vim_mode == insert",
     "bindings": {},
   },
@@ -44,8 +32,14 @@
   {
     "context": "VimControl && !menu",
     "bindings": {
-      "ctrl-d": ["workspace::SendKeystrokes", "ctrl-d z z"],
-      "ctrl-u": ["workspace::SendKeystrokes", "ctrl-u z z"],
+      "ctrl-d": [
+        "workspace::SendKeystrokes",
+        "ctrl-d z z"
+      ],
+      "ctrl-u": [
+        "workspace::SendKeystrokes",
+        "ctrl-u z z"
+      ],
     },
   },
   {
@@ -71,6 +65,22 @@
     "context": "Terminal",
     "bindings": {
       "ctrl-space": "editor::ToggleSelectionMenu",
+    },
+  },
+  {
+    "context": "Editor && extension == md",
+    "use_key_equivalents": true,
+    "bindings": {
+      "cmd-k v": "markdown::OpenPreviewToTheSide",
+      "alt-v": "markdown::OpenPreview",
+    },
+  },
+  {
+    "context": "Editor && extension == svg",
+    "use_key_equivalents": true,
+    "bindings": {
+      "cmd-k v": "svg::OpenPreviewToTheSide",
+      "alt-v": "svg::OpenPreview",
     },
   },
 ]

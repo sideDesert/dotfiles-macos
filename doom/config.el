@@ -161,3 +161,11 @@
 
 (setq org-agenda-files "~/org/agenda-files")
 (map! :map pdf-view-mode-map :n "y" #'pdf-view-kill-ring-save)
+
+;; --- Telescope-style floating completion --------------------------------
+;; Vertico renders in the minibuffer (bottom of frame) by default; posframe
+;; gives it a centered floating window instead, closer to Telescope/fzf.
+(use-package! vertico-posframe
+  :after vertico
+  :config
+  (vertico-posframe-mode 1))

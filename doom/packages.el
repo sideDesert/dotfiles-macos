@@ -53,3 +53,4 @@
 ;; (unpin! t)
 (package! tldr)
 (package! alert)
+(package! vertico-posframe)

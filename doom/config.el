@@ -8,12 +8,49 @@
 (setq display-line-numbers-type 'relative)
 (setq org-directory "~/org/")
 
+(require 'alert)
+
+(defun my/alert-osx-notifier-with-sound (info)
+  (do-applescript
+   (format "display notification %S with title %S sound name \"Ping\""
+           (plist-get info :message)
+           (plist-get info :title)))
+  (alert-message-notify info))
+
+(alert-define-style 'osx-notifier-sound
+                     :title "Notify using native OSX notification with sound"
+                     :notifier #'my/alert-osx-notifier-with-sound)
+
+(setq alert-default-style 'osx-notifier-sound)
+
+(after! org
+  (require 'appt)
+  (setq appt-display-format 'window
+        appt-disp-window-function
+        (lambda (min-to-app new-time msg)
+          (alert msg :title "Org Appointment" :severity 'high)))
+  (appt-activate 1)
+  (org-agenda-to-appt))
+
 (setq doom-theme 'doom-oceanic-next)
 
 (map! :n "C-h" #'evil-window-left
       :n "C-j" #'evil-window-down
       :n "C-k" #'evil-window-up
       :n "C-l" #'evil-window-right)
+
+;; ghostel (libghostty-in-Emacs) puts terminal buffers in evil *insert*
+;; state by default, and evil-ghostel forwards C-h/j/k/l straight to the
+;; PTY there (C-k/C-l are explicit readline passthroughs, C-j isn't in
+;; `ghostel-keymap-exceptions'). That shadows the window-motion bindings
+;; above whenever you're actually typing into a TUI (Claude Code, opencode,
+;; Codex). Reclaim them in insert state, inside ghostel buffers only.
+(after! evil-ghostel
+  (evil-define-key* 'insert evil-ghostel-mode-map
+    (kbd "C-h") #'evil-window-left
+    (kbd "C-j") #'evil-window-down
+    (kbd "C-k") #'evil-window-up
+    (kbd "C-l") #'evil-window-right))
 
 (map! :after org
       :map org-mode-map

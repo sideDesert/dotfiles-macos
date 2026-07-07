@@ -216,6 +216,22 @@
 
 (add-hook 'find-file-hook #'siddarth/org-vault-pull-once)
 
+;; --- dotfiles-macos git sync --------------------------------------------
+;; Same idea as the org vault above: auto-commit+push on save for any file
+;; that lives under dotfiles-macos, including files opened through a
+;; symlink (e.g. ~/.config/doom -> ~/dev/dotfiles-macos/doom). Uses
+;; find-file-hook rather than a mode hook since dotfiles span many modes.
+
+(defun siddarth/dotfiles-file-p ()
+  (and buffer-file-name
+       (file-in-directory-p (file-truename buffer-file-name)
+                             (expand-file-name "~/dev/dotfiles-macos"))))
+
+(add-hook 'find-file-hook
+          (lambda ()
+            (when (siddarth/dotfiles-file-p)
+              (git-auto-commit-mode 1))))
+
 ;; --- Telescope-style floating completion --------------------------------
 ;; Vertico renders in the minibuffer (bottom of frame) by default; posframe
 ;; gives it a centered floating window instead, closer to Telescope/fzf.

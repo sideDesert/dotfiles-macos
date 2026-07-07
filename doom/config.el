@@ -11,10 +11,11 @@
 (require 'alert)
 
 (defun my/alert-osx-notifier-with-sound (info)
-  (do-applescript
-   (format "display notification %S with title %S sound name \"Ping\""
-           (plist-get info :message)
-           (plist-get info :title)))
+  (start-process "org-notify-osascript" nil "osascript"
+                 "-e"
+                 (format "display notification %S with title %S sound name \"Ping\""
+                         (substring-no-properties (plist-get info :message))
+                         (substring-no-properties (plist-get info :title))))
   (alert-message-notify info))
 
 (alert-define-style 'osx-notifier-sound
@@ -25,12 +26,20 @@
 
 (after! org
   (require 'appt)
-  (setq appt-display-format 'window
+  (setq appt-message-warning-time 15
+        appt-display-interval 5
+        appt-display-mode-line nil
+        appt-display-format 'window
         appt-disp-window-function
         (lambda (min-to-app new-time msg)
-          (alert msg :title "Org Appointment" :severity 'high)))
+          (alert msg :title (format "Org Appointment in %s min" min-to-app) :severity 'high)))
   (appt-activate 1)
-  (org-agenda-to-appt))
+  (org-agenda-to-appt t)
+  (run-with-timer 300 300 (lambda () (org-agenda-to-appt t)))
+  (add-hook 'org-finalize-agenda-hook (lambda () (org-agenda-to-appt t)))
+  (add-hook 'org-mode-hook
+            (lambda ()
+              (add-hook 'after-save-hook (lambda () (org-agenda-to-appt t)) nil t))))
 
 (setq doom-theme 'doom-oceanic-next)
 
@@ -159,8 +168,53 @@
       :n "C-a" #'evil-numbers/inc-at-pt
       :n "C-x" #'evil-numbers/dec-at-pt)
 
-(setq org-agenda-files "~/org/agenda-files")
+;; `~/org/agenda-files' listed bare directories expecting recursive
+;; inclusion, but org's directory expansion (`directory-files') is not
+;; recursive -- nested files like work/projects/arc.org were silently
+;; excluded. Compute the file list directly and recursively instead.
+(setq org-agenda-files (directory-files-recursively org-directory "\\.org\\'"))
 (map! :map pdf-view-mode-map :n "y" #'pdf-view-kill-ring-save)
+
+;; --- org vault git sync -----------------------------------------------
+;; Auto-commit+push on save, and auto-pull once when the vault is first
+;; visited, so the two machines stay in sync without manual git commands.
+
+(use-package! git-auto-commit-mode
+  :defer t
+  :init
+  (setq gac-automatically-push-p t
+        gac-debounce-interval 10 ; batch rapid successive saves into one commit
+        gac-silent-message-p t))
+
+(defun siddarth/org-vault-file-p ()
+  (and buffer-file-name
+       (file-in-directory-p buffer-file-name (expand-file-name org-directory))))
+
+(add-hook 'org-mode-hook
+          (lambda ()
+            (when (siddarth/org-vault-file-p)
+              (git-auto-commit-mode 1))))
+
+(defvar siddarth/org-vault-pulled-p nil
+  "Non-nil once we've pulled the org vault this Emacs session.")
+
+(defun siddarth/org-vault-pull-once ()
+  (when (and (siddarth/org-vault-file-p)
+             (not siddarth/org-vault-pulled-p))
+    (setq siddarth/org-vault-pulled-p t)
+    (let ((default-directory (expand-file-name org-directory)))
+      (message "Pulling org vault...")
+      (make-process
+       :name "org-vault-pull"
+       :command '("git" "pull" "--rebase" "--autostash")
+       :buffer "*org-vault-pull*"
+       :sentinel
+       (lambda (proc _event)
+         (if (zerop (process-exit-status proc))
+             (message "Org vault: pulled latest changes.")
+           (message "Org vault: pull failed, check *org-vault-pull* buffer.")))))))
+
+(add-hook 'find-file-hook #'siddarth/org-vault-pull-once)
 
 ;; --- Telescope-style floating completion --------------------------------
 ;; Vertico renders in the minibuffer (bottom of frame) by default; posframe

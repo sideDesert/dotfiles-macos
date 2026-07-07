@@ -54,12 +54,28 @@
 ;; `ghostel-keymap-exceptions'). That shadows the window-motion bindings
 ;; above whenever you're actually typing into a TUI (Claude Code, opencode,
 ;; Codex). Reclaim them in insert state, inside ghostel buffers only.
+;;
+;; Same story for C-z (evil-ghostel deliberately leaves it to evil's
+;; `evil-emacs-state' toggle, but nothing pins that down against ghostel's
+;; own map) and s-1..s-9 (Doom's `+workspace/switch-to-N' bindings only
+;; exist in evil *normal* state, so they're simply absent in insert state).
 (after! evil-ghostel
   (evil-define-key* 'insert evil-ghostel-mode-map
     (kbd "C-h") #'evil-window-left
     (kbd "C-j") #'evil-window-down
     (kbd "C-k") #'evil-window-up
-    (kbd "C-l") #'evil-window-right))
+    (kbd "C-l") #'evil-window-right
+    (kbd "C-z") #'evil-emacs-state
+    (kbd "s-1") #'+workspace/switch-to-0
+    (kbd "s-2") #'+workspace/switch-to-1
+    (kbd "s-3") #'+workspace/switch-to-2
+    (kbd "s-4") #'+workspace/switch-to-3
+    (kbd "s-5") #'+workspace/switch-to-4
+    (kbd "s-6") #'+workspace/switch-to-5
+    (kbd "s-7") #'+workspace/switch-to-6
+    (kbd "s-8") #'+workspace/switch-to-7
+    (kbd "s-9") #'+workspace/switch-to-final))
+
 
 (map! :after org
       :map org-mode-map

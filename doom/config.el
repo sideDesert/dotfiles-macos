@@ -16,6 +16,14 @@
 ;; org agenda files) causing "Agenda file %s is not in Org mode" errors.
 (setq so-long-threshold 1000)
 
+;; Without this, lsp-mode prompts per-file to import a project root and often
+;; gets nudged into accepting whatever narrow subfolder the current file
+;; lives in (e.g. src/components/ instead of the repo root), which orphans
+;; the LSP session from tsconfig.json/Cargo.toml at the real root. Auto-guess
+;; walks up to the actual project markers instead of asking.
+(after! lsp-mode
+  (setq lsp-auto-guess-root t))
+
 (require 'alert)
 
 (defun my/alert-osx-notifier-with-sound (info)

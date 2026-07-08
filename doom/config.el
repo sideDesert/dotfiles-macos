@@ -8,6 +8,14 @@
 (setq display-line-numbers-type 'relative)
 (setq org-directory "~/org/")
 
+;; A single long prose/code line (e.g. a long paragraph or match arm) is not
+;; the same performance risk as truly minified/generated files. Emacs's
+;; default so-long-threshold (250 chars) is low enough that normal org notes
+;; and Rust files trip it, silently demoting the buffer out of org-mode/
+;; rustic-mode into so-long-mode -- killing font-lock highlighting and (for
+;; org agenda files) causing "Agenda file %s is not in Org mode" errors.
+(setq so-long-threshold 1000)
+
 (require 'alert)
 
 (defun my/alert-osx-notifier-with-sound (info)
@@ -48,6 +56,16 @@
       :n "C-k" #'evil-window-up
       :n "C-l" #'evil-window-right)
 
+;; Treemacs runs in its own `evil-treemacs-state', not evil normal state, so
+;; the global :n bindings above never reach it. Mirror them here.
+(after! treemacs-evil
+  (define-key! evil-treemacs-state-map
+    "C-h" #'evil-window-left
+    "C-j" #'evil-window-down
+    "C-k" #'evil-window-up
+    "C-l" #'evil-window-right
+    "a"   #'treemacs-create-file))
+
 ;; ghostel (libghostty-in-Emacs) puts terminal buffers in evil *insert*
 ;; state by default, and evil-ghostel forwards C-h/j/k/l straight to the
 ;; PTY there (C-k/C-l are explicit readline passthroughs, C-j isn't in
@@ -82,7 +100,24 @@
     (kbd "s-6") #'+workspace/switch-to-5
     (kbd "s-7") #'+workspace/switch-to-6
     (kbd "s-8") #'+workspace/switch-to-7
-    (kbd "s-9") #'+workspace/switch-to-final))
+    (kbd "s-9") #'+workspace/switch-to-final)
+
+  ;; ghostel's key-forwarding loop (`ghostel--define-terminal-keys') only
+  ;; builds bindings for the "S-" "C-" "M-" "C-S-" "M-S-" "C-M-" modifier
+  ;; combos -- it never generates an "s-" (Cmd) variant, so s-<backspace>
+  ;; falls through to Emacs/Doom's global map and never reaches the PTY.
+  ;; Separately, Shift-Enter and the C-/M-<backspace> word-delete combos do
+  ;; reach the PTY, but go through ghostel's generic CSI-u/kitty-protocol
+  ;; key encoder, which readline (bash/zsh) and most TUIs -- including
+  ;; Claude Code -- don't interpret consistently. Bypass the encoder for
+  ;; these specific keys and send the exact bytes those consumers expect:
+  ;; \n for a literal newline, ^U (kill-to-start-of-line) for Cmd-Delete,
+  ;; ^W (kill-word) for Ctrl-Delete and Option-Delete alike.
+  (evil-define-key* 'insert evil-ghostel-mode-map
+    (kbd "S-<return>")   (cmd! (ghostel-send-string "\n"))
+    (kbd "s-<backspace>") (cmd! (ghostel-send-string "\x15"))
+    (kbd "C-<backspace>") (cmd! (ghostel-send-string "\x17"))
+    (kbd "M-<backspace>") (cmd! (ghostel-send-string "\x17"))))
 
 
 (map! :after org
@@ -185,6 +220,8 @@
 (map! "s-\\" #'split-window-right
       "s-|"  #'split-window-below)
 
+(map! "s-b" #'+treemacs/toggle)
+
 (map! :n "C-d" (cmd! (evil-scroll-down nil)
                      (evil-scroll-line-to-center nil))
       :n "C-u" (cmd! (evil-scroll-up nil)
@@ -263,3 +300,18 @@
   :after vertico
   :config
   (vertico-posframe-mode 1))
+
+;; --- gd should jump, not prompt -----------------------------------------
+;; The :tools lookup module wires xref-show-definitions-function to
+;; consult-xref so "SPC c d"/"gd" always shows a completing-read pop-up,
+;; even when LSP (clangd/rust-analyzer/typescript-language-server) reports
+;; exactly one definition. Auto-jump when there's a single candidate and
+;; only fall back to the consult picker when genuinely ambiguous (e.g.
+;; multiple trait impls in Rust, or overloaded C++ functions).
+(after! consult
+  (defun siddarth/xref-show-definitions (fetcher alist)
+    (let ((xrefs (funcall fetcher)))
+      (if (= (length xrefs) 1)
+          (xref-pop-to-location (car xrefs) (alist-get 'display-action alist))
+        (consult-xref fetcher alist))))
+  (setq xref-show-definitions-function #'siddarth/xref-show-definitions))

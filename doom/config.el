@@ -59,6 +59,14 @@
 ;; `evil-emacs-state' toggle, but nothing pins that down against ghostel's
 ;; own map) and s-1..s-9 (Doom's `+workspace/switch-to-N' bindings only
 ;; exist in evil *normal* state, so they're simply absent in insert state).
+;;
+;; Note: plain C-c is deliberately left alone here (and by evil-ghostel's
+;; own passthrough whitelist) since it's Emacs' universal mode-specific-map
+;; prefix. Ghostel's base `ghostel-mode-map' already provides terminal
+;; control under that prefix regardless of evil state: `C-c C-c' sends
+;; SIGINT (use this to interrupt/exit Claude Code), `C-c C-z' suspends,
+;; `C-c C-d' sends EOF. Binding plain C-c to a passthrough command here
+;; would swallow the prefix and break all of those two-key chords at once.
 (after! evil-ghostel
   (evil-define-key* 'insert evil-ghostel-mode-map
     (kbd "C-h") #'evil-window-left

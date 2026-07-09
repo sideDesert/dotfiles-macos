@@ -24,7 +24,4 @@ emacsclient -n -e '(let ((f (seq-find (lambda (fr)
     (raise-frame f)
     (select-frame-set-input-focus f))
    (t
-    (select-frame-set-input-focus (make-frame))))
-  t)' >/dev/null
-
-osascript -e 'tell application "Emacs" to activate' >/dev/null 2>&1
+    (select-frame-set-input-focus (make-frame)))) t)' >/dev/null

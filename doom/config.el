@@ -323,3 +323,16 @@
           (xref-pop-to-location (car xrefs) (alist-get 'display-action alist))
         (consult-xref fetcher alist))))
   (setq xref-show-definitions-function #'siddarth/xref-show-definitions))
+
+;; Neutralize M-m everywhere so Raycast's Opt+M hotkey never fires an Emacs
+;; command when the frame happens to be focused. We route it through an
+;; emulation-mode keymap so it wins over evil-*-state-map, org-mode-map,
+;; and anything else that might bind it.
+(defvar siddarth/no-m-m-map
+  (let ((m (make-sparse-keymap)))
+    (define-key m (kbd "M-m") #'ignore)
+    m)
+  "Keymap that swallows M-m so Raycast's Opt+M passthrough is a no-op.")
+
+(add-to-list 'emulation-mode-map-alists
+             `((t . ,siddarth/no-m-m-map)))

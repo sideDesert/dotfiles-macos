@@ -92,6 +92,16 @@
       :n "j" #'evil-next-visual-line
       :n "k" #'evil-previous-visual-line)
 
+;; Doom's C++ module gives these keys to `ccls-navigate' in C/C++ buffers.
+;; Restore the global window-navigation convention in those higher-precedence
+;; local maps; CCLS remains available through its other commands.
+(after! cc-mode
+  (map! :map (c-mode-map c++-mode-map)
+        :n "C-h" #'evil-window-left
+        :n "C-j" #'evil-window-down
+        :n "C-k" #'evil-window-up
+        :n "C-l" #'evil-window-right))
+
 ;; Treemacs runs in its own `evil-treemacs-state', not evil normal state, so
 ;; the global :n bindings above never reach it. Mirror them here.
 (after! treemacs-evil

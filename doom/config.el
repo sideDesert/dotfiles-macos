@@ -337,10 +337,9 @@
 
 (defun siddarth/project-file-search ()
   (interactive)
-  (let ((default-directory
-         (or (projectile-project-root)
-             default-directory)))
-    (consult-fd default-directory)))
+  (consult-fd
+   (or (projectile-project-root)
+       default-directory)))
 
 (map! "s-p" #'siddarth/project-file-search
       "s-F" #'+default/search-project)
@@ -349,20 +348,18 @@
   (consult-customize
    siddarth/project-file-search
    +default/search-project
-   :preview-key 'any))
+   :preview-key 'any)
 
-;; consult-xref so "SPC c d"/"gd" always shows a completing-read pop-up,
-;; even when LSP (clangd/rust-analyzer/typescript-language-server) reports
-;; exactly one definition. Auto-jump when there's a single candidate and
-;; only fall back to the consult picker when genuinely ambiguous (e.g.
-;; multiple trait impls in Rust, or overloaded C++ functions).
-(after! consult
   (defun siddarth/xref-show-definitions (fetcher alist)
     (let ((xrefs (funcall fetcher)))
       (if (= (length xrefs) 1)
-          (xref-pop-to-location (car xrefs) (alist-get 'display-action alist))
+          (xref-pop-to-location
+           (car xrefs)
+           (alist-get 'display-action alist))
         (consult-xref fetcher alist))))
-  (setq xref-show-definitions-function #'siddarth/xref-show-definitions))
+
+  (setq xref-show-definitions-function
+        #'siddarth/xref-show-definitions))
 
 ;; Neutralize M-m everywhere so Raycast's Opt+M hotkey never fires an Emacs
 ;; command when the frame happens to be focused. We route it through an

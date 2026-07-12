@@ -342,13 +342,10 @@
             (when (siddarth/dotfiles-file-p)
               (git-auto-commit-mode 1))))
 
-;; --- Telescope-style floating completion --------------------------------
-;; Vertico renders in the minibuffer (bottom of frame) by default; posframe
-;; gives it a centered floating window instead, closer to Telescope/fzf.
-(use-package! vertico-posframe
-  :after vertico
-  :config
-  (vertico-posframe-mode 1))
+;; Keep Vertico in the regular minibuffer at the bottom of the frame.
+;; The centered posframe obscures too much code during project searches.
+(after! vertico-posframe
+  (vertico-posframe-mode -1))
 
 (defun siddarth/project-file-search ()
   (interactive)

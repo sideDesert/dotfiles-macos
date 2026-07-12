@@ -342,10 +342,11 @@
             (when (siddarth/dotfiles-file-p)
               (git-auto-commit-mode 1))))
 
-;; Keep Vertico in the regular minibuffer at the bottom of the frame.
-;; The centered posframe obscures too much code during project searches.
-(after! vertico-posframe
-  (vertico-posframe-mode -1))
+;; Use a centered floating completion window for project/file searches.
+(use-package! vertico-posframe
+  :after vertico
+  :config
+  (vertico-posframe-mode 1))
 
 (defun siddarth/project-file-search ()
   (interactive)

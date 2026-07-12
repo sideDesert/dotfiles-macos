@@ -402,3 +402,12 @@
         ("p" "Projects" todo "PROJ")
         ("h" "On hold" todo "HOLD")
         ("i" "Ideas" todo "IDEA")))
+(after! org
+  (setq org-capture-templates
+        '(("p" "Personal TODO" entry
+           (file "~/org/personal/life.org")
+           "* TODO %?\n  %U\n")
+
+          ("w" "Work TODO" entry
+           (file "~/org/work/index.org")
+           "* TODO %?\n  %U\n"))))

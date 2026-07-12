@@ -414,4 +414,10 @@
                '("W" "Work task" entry
                  (file "~/org/work/inbox.org")
                  "* TODO %?\n  %U\n")
-               t))
+               t)
+(setq org-refile-targets
+      '((org-agenda-files :maxlevel . 3)))
+
+(setq org-refile-use-outline-path 'file
+      org-outline-path-complete-in-steps nil)
+  )

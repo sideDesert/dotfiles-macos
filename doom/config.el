@@ -247,7 +247,6 @@
       :desc "Delete other windows" "o" #'delete-other-windows)
 (map! "s-p" #'projectile-find-file
       "s-F" #'+default/search-project)
-
 (map! "s-=" #'text-scale-increase
       "s--" #'text-scale-decrease
       "s-+" (cmd! (global-text-scale-adjust 1))

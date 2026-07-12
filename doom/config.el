@@ -245,7 +245,6 @@
       :prefix ("b" . "buffer")
       :desc "Delete window" "d" #'delete-window
       :desc "Delete other windows" "o" #'delete-other-windows)
-(map! "s-P" #'execute-extended-command)
 
 (map! "s-=" #'text-scale-increase
       "s--" #'text-scale-decrease

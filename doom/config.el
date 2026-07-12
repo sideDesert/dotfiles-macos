@@ -42,6 +42,31 @@
 
 (after! org
   (require 'appt)
+  ;; `org-agenda-to-appt' misses the time on today's occurrence of a
+  ;; recurring SCHEDULED timestamp. Keep SCHEDULED as the source of truth,
+  ;; but add daily recurring entries to `appt' explicitly.
+  (defun my/org-agenda-to-appt-with-repeaters ()
+    (interactive)
+    (let ((inhibit-message t))
+      (org-agenda-to-appt t))
+    (dolist (file (org-agenda-files 'unrestricted))
+      (with-temp-buffer
+        (insert-file-contents file)
+        (delay-mode-hooks (org-mode))
+        (org-map-entries
+         (lambda ()
+           (let ((scheduled (org-entry-get nil "SCHEDULED")))
+             (when (and scheduled
+                        (string-match
+                         "^<\\([0-9-]+\\).*?\\([0-9]+:[0-9][0-9]\\).*?\\(?:\\+\\+\\|\\+\\)1d>"
+                         scheduled)
+                        (not (time-less-p
+                              (current-time)
+                              (org-time-string-to-time
+                               (concat "<" (match-string 1 scheduled) ">")))))
+               (appt-add
+                (match-string 2 scheduled)
+                (org-get-heading t t t t)))))))))
   (setq appt-message-warning-time 15
         appt-display-interval 5
         appt-display-mode-line nil
@@ -50,12 +75,12 @@
         (lambda (min-to-app new-time msg)
           (alert msg :title (format "Org Appointment in %s min" min-to-app) :severity 'high)))
   (appt-activate 1)
-  (org-agenda-to-appt t)
-  (run-with-timer 300 300 (lambda () (org-agenda-to-appt t)))
-  (add-hook 'org-finalize-agenda-hook (lambda () (org-agenda-to-appt t)))
+  (my/org-agenda-to-appt-with-repeaters)
+  (run-with-timer 300 300 #'my/org-agenda-to-appt-with-repeaters)
+  (add-hook 'org-finalize-agenda-hook #'my/org-agenda-to-appt-with-repeaters)
   (add-hook 'org-mode-hook
-            (lambda ()
-              (add-hook 'after-save-hook (lambda () (org-agenda-to-appt t)) nil t))))
+    (lambda ()
+      (add-hook 'after-save-hook #'my/org-agenda-to-appt-with-repeaters nil t))))
 
 (setq doom-theme 'doom-oceanic-next)
 

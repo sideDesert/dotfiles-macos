@@ -362,6 +362,10 @@
     m)
 
   "Keymap that swallows M-m so Raycast's Opt+M passthrough is a no-op.")
+
+(add-to-list 'emulation-mode-map-alists
+             `((t . ,siddarth/no-m-m-map)))
+
 (after! org
   (setq org-todo-keywords
         '((sequence
@@ -387,6 +391,3 @@
            "OKAY(o)"
            "YES(y)"
            "NO(n)"))))
-
-(add-to-list 'emulation-mode-map-alists
-             `((t . ,siddarth/no-m-m-map)))

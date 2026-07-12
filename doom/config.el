@@ -346,9 +346,10 @@
 
 (after! consult
   (consult-customize
+   consult-fd
    siddarth/project-file-search
    +default/search-project
-   :preview-key 'any)
+   :preview-key 'any))
 
   (defun siddarth/xref-show-definitions (fetcher alist)
     (let ((xrefs (funcall fetcher)))

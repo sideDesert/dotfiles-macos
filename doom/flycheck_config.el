@@ -361,7 +361,6 @@
     (define-key m (kbd "M-m") #'ignore)
     m)
 
-
   "Keymap that swallows M-m so Raycast's Opt+M passthrough is a no-op.")
 (after! org
   (setq org-todo-keywords

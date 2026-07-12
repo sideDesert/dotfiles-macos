@@ -360,7 +360,33 @@
   (let ((m (make-sparse-keymap)))
     (define-key m (kbd "M-m") #'ignore)
     m)
+
   "Keymap that swallows M-m so Raycast's Opt+M passthrough is a no-op.")
+(after! org
+  (setq org-todo-keywords
+        '((sequence
+           "TODO(t)"
+           "NEXT(n)"
+           "PROJ(p)"
+           "LOOP(r)"
+           "STRT(s)"
+           "WAIT(w)"
+           "HOLD(h)"
+           "IDEA(i)"
+           "|"
+           "DONE(d)"
+           "KILL(k)")
+          (sequence
+           "[ ](T)"
+           "[-](S)"
+           "[?](W)"
+           "|"
+           "[X](D)")
+          (sequence
+           "|"
+           "OKAY(o)"
+           "YES(y)"
+           "NO(n)"))))
 
 (add-to-list 'emulation-mode-map-alists
              `((t . ,siddarth/no-m-m-map)))

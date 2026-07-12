@@ -62,7 +62,10 @@
 (map! :n "C-h" #'evil-window-left
       :n "C-j" #'evil-window-down
       :n "C-k" #'evil-window-up
-      :n "C-l" #'evil-window-right)
+      :n "C-l" #'evil-window-right
+      ;; Follow wrapped screen lines instead of jumping between file lines.
+      :n "j" #'evil-next-visual-line
+      :n "k" #'evil-previous-visual-line)
 
 ;; Treemacs runs in its own `evil-treemacs-state', not evil normal state, so
 ;; the global :n bindings above never reach it. Mirror them here.

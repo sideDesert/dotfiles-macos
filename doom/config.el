@@ -354,6 +354,7 @@
        default-directory)))
 
 (map! "s-p" #'siddarth/project-file-search
+      "s-P" #'+default/search-project
       "s-F" #'+default/search-project)
 
 (after! consult

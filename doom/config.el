@@ -394,3 +394,11 @@
            "NO(N)"))))
 (after! org
   (setq org-complete-tags-always-offer-all-agenda-tags t))
+
+(setq org-agenda-custom-commands
+      '(("n" "Next tasks"
+         todo "NEXT")
+        ("w" "Waiting tasks"
+         todo "WAIT")
+        ("p" "Active projects"
+         todo "PROJ")))

@@ -337,17 +337,17 @@
 
 (defun siddarth/project-file-search ()
   (interactive)
-  (consult-fd
-   (or (projectile-project-root)
-       default-directory)))
+  (let ((default-directory
+         (or (projectile-project-root)
+             default-directory)))
+    (consult-fd default-directory)))
 
-(map! "s-p" #'siddarth/project-file-search)
-
+(map! "s-p" #'siddarth/project-file-search
       "s-F" #'+default/search-project)
 
 (after! consult
   (consult-customize
-   consult-fd
+   siddarth/project-file-search
    +default/search-project
    :preview-key 'any))
 

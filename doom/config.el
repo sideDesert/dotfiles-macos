@@ -88,6 +88,10 @@
       :n "C-j" #'evil-window-down
       :n "C-k" #'evil-window-up
       :n "C-l" #'evil-window-right
+      "C-S-h" #'shrink-window-horizontally
+      "C-S-j" #'shrink-window
+      "C-S-k" #'enlarge-window
+      "C-S-l" #'enlarge-window-horizontally
       ;; Follow wrapped screen lines instead of jumping between file lines.
       :n "j" #'evil-next-visual-line
       :n "k" #'evil-previous-visual-line)

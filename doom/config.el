@@ -366,6 +366,7 @@
 (add-to-list 'emulation-mode-map-alists
              `((t . ,siddarth/no-m-m-map)))
 
+;; org mode setup
 (after! org
   (setq org-todo-keywords
         '((sequence
@@ -391,3 +392,5 @@
            "OKAY(o)"
            "YES(y)"
            "NO(N)"))))
+(after! org
+  (setq org-complete-tags-always-offer-all-agenda-tags t))

@@ -402,22 +402,16 @@
         ("p" "Projects" todo "PROJ")
         ("h" "On hold" todo "HOLD")
         ("i" "Ideas" todo "IDEA")))
-(after! org
-  (dolist
-      (template
-       '(("P" "Personal")
-         ("Pt" "Personal task" entry
-          (file "~/org/personal/inbox.org")
-          "* TODO %?\n  %U\n")
-         ("Pn" "Personal note" entry
-          (file "~/org/personal/inbox.org")
-          "* %?\n  %U\n")
 
-         ("W" "Work")
-         ("Wt" "Work task" entry
-          (file "~/org/work/inbox.org")
-          "* TODO %?\n  %U\n")
-         ("Wn" "Work note" entry
-          (file "~/org/work/inbox.org")
-          "* %?\n  %U\n")))
-    (add-to-list 'org-capture-templates template t)))
+  ;; Keep Doom's existing capture templates.
+  (add-to-list 'org-capture-templates
+               '("P" "Personal task" entry
+                 (file "~/org/personal/inbox.org")
+                 "* TODO %?\n  %U\n")
+               t)
+
+  (add-to-list 'org-capture-templates
+               '("W" "Work task" entry
+                 (file "~/org/work/inbox.org")
+                 "* TODO %?\n  %U\n")
+               t))

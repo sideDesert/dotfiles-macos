@@ -393,7 +393,7 @@
            "YES(y)"
            "NO(N)"))))
 (after! org
-  (setq org-complete-tags-always-offer-all-agenda-tags t))
+  (setq org-complete-tags-always-offer-all-agenda-tags t)
 
 (setq org-agenda-custom-commands
       '(("n" "Next tasks" todo "NEXT")
@@ -415,4 +415,4 @@
                '("W" "Work task" entry
                  (file "~/org/work/inbox.org")
                  "* TODO %?\n  %U\n")
-               t))
+               t)))

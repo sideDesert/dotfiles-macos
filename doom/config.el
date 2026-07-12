@@ -404,25 +404,12 @@
         ("i" "Ideas" todo "IDEA")))
 
 (after! org
-  (setq org-complete-tags-always-offer-all-agenda-tags t)
+  (setq org-complete-tags-always-offer-all-agenda-tags t))
 
-  (setq org-agenda-custom-commands
-        '(("n" "Next tasks" todo "NEXT")
-          ("t" "Unprocessed TODOs" todo "TODO")
-          ("w" "Waiting tasks" todo "WAIT")
-          ("p" "Projects" todo "PROJ")
-          ("h" "On hold" todo "HOLD")
-          ("i" "Ideas" todo "IDEA")))
-
-  ;; Keep Doom's existing capture templates.
-  (add-to-list 'org-capture-templates
-               '("P" "Personal task" entry
-                 (file "~/org/personal/inbox.org")
-                 "* TODO %?\n  %U\n")
-               t)
-
-  (add-to-list 'org-capture-templates
-               '("W" "Work task" entry
-                 (file "~/org/work/inbox.org")
-                 "* TODO %?\n  %U\n")
-               t))
+(setq org-agenda-custom-commands
+      '(("n" "Next tasks" todo "NEXT")
+        ("t" "Unprocessed TODOs" todo "TODO")
+        ("w" "Waiting tasks" todo "WAIT")
+        ("p" "Projects" todo "PROJ")
+        ("h" "On hold" todo "HOLD")
+        ("i" "Ideas" todo "IDEA")))

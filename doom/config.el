@@ -96,11 +96,16 @@
 ;; Restore the global window-navigation convention in those higher-precedence
 ;; local maps; CCLS remains available through its other commands.
 (after! cc-mode
-  (map! :map (c-mode-map c++-mode-map)
-        :n "C-h" #'evil-window-left
-        :n "C-j" #'evil-window-down
-        :n "C-k" #'evil-window-up
-        :n "C-l" #'evil-window-right))
+  (evil-define-key* 'normal c-mode-map
+    (kbd "C-h") #'evil-window-left
+    (kbd "C-j") #'evil-window-down
+    (kbd "C-k") #'evil-window-up
+    (kbd "C-l") #'evil-window-right)
+  (evil-define-key* 'normal c++-mode-map
+    (kbd "C-h") #'evil-window-left
+    (kbd "C-j") #'evil-window-down
+    (kbd "C-k") #'evil-window-up
+    (kbd "C-l") #'evil-window-right))
 
 ;; Treemacs runs in its own `evil-treemacs-state', not evil normal state, so
 ;; the global :n bindings above never reach it. Mirror them here.

@@ -245,8 +245,6 @@
       :prefix ("b" . "buffer")
       :desc "Delete window" "d" #'delete-window
       :desc "Delete other windows" "o" #'delete-other-windows)
-(map! "s-p" #'projectile-find-file
-      "s-F" #'+default/search-project)
 (map! "s-=" #'text-scale-increase
       "s--" #'text-scale-decrease
       "s-+" (cmd! (global-text-scale-adjust 1))
@@ -337,16 +335,22 @@
   :config
   (vertico-posframe-mode 1))
 
-(map! "s-p" #'consult-project-buffer
+(defun siddarth/consult-project-files ()
+  (interactive)
+  (let ((default-directory
+         (or (projectile-project-root)
+             default-directory)))
+    (consult-find default-directory)))
+
+(map! "s-p" #'siddarth/consult-project-files
       "s-F" #'+default/search-project)
 
 (after! consult
   (consult-customize
-   consult-project-buffer
+   siddarth/consult-project-files
    +default/search-project
    :preview-key 'any))
-;; --- gd should jump, not prompt -----------------------------------------
-;; The :tools lookup module wires xref-show-definitions-function to
+
 ;; consult-xref so "SPC c d"/"gd" always shows a completing-read pop-up,
 ;; even when LSP (clangd/rust-analyzer/typescript-language-server) reports
 ;; exactly one definition. Auto-jump when there's a single candidate and

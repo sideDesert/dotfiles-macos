@@ -422,3 +422,17 @@
   (setq org-refile-use-outline-path 'file
       org-outline-path-complete-in-steps nil)
   )
+(setq org-agenda-custom-commands
+      '(("d" "Daily dashboard"
+         ((agenda ""
+                  ((org-agenda-span 1)
+                   (org-agenda-start-day nil)))
+          (todo "NEXT")
+          (todo "WAIT")))
+
+        ("n" "Next tasks" todo "NEXT")
+        ("t" "Unprocessed TODOs" todo "TODO")
+        ("w" "Waiting tasks" todo "WAIT")
+        ("p" "Projects" todo "PROJ")
+        ("h" "On hold" todo "HOLD")
+        ("i" "Ideas" todo "IDEA")))

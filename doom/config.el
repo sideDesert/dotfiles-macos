@@ -396,9 +396,9 @@
   (setq org-complete-tags-always-offer-all-agenda-tags t))
 
 (setq org-agenda-custom-commands
-      '(("n" "Next tasks"
-         todo "NEXT")
-        ("w" "Waiting tasks"
-         todo "WAIT")
-        ("p" "Active projects"
-         todo "PROJ")))
+      '(("n" "Next tasks" todo "NEXT")
+        ("t" "Unprocessed TODOs" todo "TODO")
+        ("w" "Waiting tasks" todo "WAIT")
+        ("p" "Projects" todo "PROJ")
+        ("h" "On hold" todo "HOLD")
+        ("i" "Ideas" todo "IDEA")))

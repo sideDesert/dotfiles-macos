@@ -337,6 +337,14 @@
   :config
   (vertico-posframe-mode 1))
 
+(map! "s-p" #'consult-project-buffer
+      "s-F" #'+default/search-project)
+
+(after! consult
+  (consult-customize
+   consult-project-buffer
+   +default/search-project
+   :preview-key 'any))
 ;; --- gd should jump, not prompt -----------------------------------------
 ;; The :tools lookup module wires xref-show-definitions-function to
 ;; consult-xref so "SPC c d"/"gd" always shows a completing-read pop-up,

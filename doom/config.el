@@ -1,11 +1,5 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 
-(add-to-list 'exec-path "/Library/TeX/texbin")
-
-;; Without this, native-comp's async trampoline compilation fails with
-;; "ld: library 'emutls_w' not found" / "error invoking gcc driver" because
-;; libgccjit shells out to gcc for linking and can't find libemutls_w.a,
-;; which lives under Homebrew gcc's lib dir rather than a standard path.
 (setenv "LIBRARY_PATH"
         (string-join
          (delq nil
@@ -14,6 +8,12 @@
                      (let ((existing (getenv "LIBRARY_PATH")))
                        (and existing (not (string-empty-p existing)) existing))))
          ":"))
+
+;; Without this, native-comp's async trampoline compilation fails with
+;; "ld: library 'emutls_w' not found" / "error invoking gcc driver" because
+;; libgccjit shells out to gcc for linking and can't find libemutls_w.a,
+;; which lives under Homebrew gcc's lib dir rather than a standard path.
+(add-to-list 'exec-path "/Library/TeX/texbin")
 
 (after! tex-site
   (TeX-modes-set 'TeX-modes TeX-modes))

@@ -1,4 +1,6 @@
+;; -*- lexical-binding: t; -*-
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+;;;
 ;;; Performance
 setq process-connection-type nil
 

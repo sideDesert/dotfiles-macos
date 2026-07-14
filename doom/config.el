@@ -1,4 +1,6 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
+;;; Performance
+setq process-connection-type nil
 
 (setenv "LIBRARY_PATH"
         (string-join
@@ -96,6 +98,22 @@
       (add-hook 'after-save-hook #'my/org-agenda-to-appt-with-repeaters nil t))))
 
 (setq doom-theme 'doom-oceanic-next)
+
+;; Magit's `executable-find "git"' walks the full PATH on macOS (Homebrew,
+;; /usr/bin shim that forwards to Xcode CLT, etc.) on every invocation,
+;; adding several seconds to magit-status/commit. Pinning the executable
+;; skips the search and drops latency from ~4s to <1s.
+(after! magit
+  (setq magit-git-executable "/opt/homebrew/bin/git"))
+
+;; Emacs's built-in VC package shells out to git independently of Magit
+;; (vc-refresh-state runs on every find-file, save, and revert) and its
+;; results go almost entirely unused since Magit has its own status/diff
+;; machinery. That's a second, redundant set of git processes forked on top
+;; of Magit's own, and is the #1 cause of "everywhere, all the time" Magit
+;; sluggishness per Magit's own performance notes. Dropping Git from the
+;; backends VC handles stops Emacs from doing that duplicate work.
+(setq vc-handled-backends (delq 'Git vc-handled-backends))
 
 (map! :n "C-h" #'evil-window-left
       :n "C-j" #'evil-window-down

@@ -1,4 +1,3 @@
-;; -*- lexical-binding: t; -*-
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 ;;;
 ;;; Performance
@@ -467,6 +466,8 @@
            ((agenda ""
                     ((org-agenda-span 1)
                      (org-agenda-start-day nil)))
+            (todo "STRT")
+            (todo "PROJ")
             (todo "NEXT")
             (todo "WAIT")))
 

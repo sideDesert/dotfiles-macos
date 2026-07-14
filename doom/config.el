@@ -2,7 +2,7 @@
 ;;; $DOOMDIR/config.el -*- lexical-binding: t; -*-
 ;;;
 ;;; Performance
-setq process-connection-type nil
+(setq process-connection-type nil)
 ;; Raise threshold during startup
 (setq gc-cons-threshold 100000000)
 ;; Lower it back to a reasonable level after initialization

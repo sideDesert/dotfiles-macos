@@ -3,6 +3,12 @@
 ;;;
 ;;; Performance
 setq process-connection-type nil
+;; Raise threshold during startup
+(setq gc-cons-threshold 100000000)
+;; Lower it back to a reasonable level after initialization
+(add-hook 'emacs-startup-hook
+          (lambda () (setq gc-cons-threshold 800000)))
+
 
 (setenv "LIBRARY_PATH"
         (string-join

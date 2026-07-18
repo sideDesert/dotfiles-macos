@@ -322,8 +322,11 @@
 ;; `~/org/agenda-files' listed bare directories expecting recursive
 ;; inclusion, but org's directory expansion (`directory-files') is not
 ;; recursive -- nested files like work/projects/arc.org were silently
-;; excluded. Compute the file list directly and recursively instead.
-(setq org-agenda-files (directory-files-recursively org-directory "\\.org\\'"))
+;; excluded. Compute the file list directly and recursively instead, then add
+;; the GRE task file, which deliberately lives outside the Org vault.
+(setq org-agenda-files
+      (append (directory-files-recursively org-directory "\\.org\\'")
+              '("/Users/siddarth/Documents/gre-prep/gre.org")))
 (map! :map pdf-view-mode-map :n "y" #'pdf-view-kill-ring-save)
 
 ;; --- org vault git sync -----------------------------------------------

@@ -54,4 +54,3 @@
 (package! tldr)
 (package! alert)
 (package! git-auto-commit-mode)
-(package! vertico-posframe)

@@ -383,12 +383,6 @@
             (when (siddarth/dotfiles-file-p)
               (git-auto-commit-mode 1))))
 
-;; Use a centered floating completion window for project/file searches.
-(use-package! vertico-posframe
-  :after vertico
-  :config
-  (vertico-posframe-mode 1))
-
 (defun siddarth/project-file-search ()
   (interactive)
   (consult-fd

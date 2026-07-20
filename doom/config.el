@@ -37,6 +37,11 @@
 ;; org agenda files) causing "Agenda file %s is not in Org mode" errors.
 (setq so-long-threshold 1000)
 
+;; macOS trackpad horizontal scrolling
+(pixel-scroll-precision-mode 1)
+(setq hscroll-margin 10
+      hscroll-step 1)
+
 ;; Without this, lsp-mode prompts per-file to import a project root and often
 ;; gets nudged into accepting whatever narrow subfolder the current file
 ;; lives in (e.g. src/components/ instead of the repo root), which orphans

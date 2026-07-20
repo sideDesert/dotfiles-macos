@@ -89,7 +89,7 @@
                  (unless (time-less-p
                           (current-time)
                           (org-time-string-to-time (concat "<" date ">")))
-                   (appt-add time heading))))))))
+                   (appt-add time heading))))))))))
   (setq appt-message-warning-time 15
         appt-display-interval 5
         appt-display-mode-line nil

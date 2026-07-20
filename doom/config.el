@@ -80,14 +80,16 @@
              (when (and scheduled
                         (string-match
                          "^<\\([0-9-]+\\).*?\\([0-9]+:[0-9][0-9]\\).*?\\(?:\\+\\+\\|\\+\\)1d>"
-                         scheduled)
-                        (not (time-less-p
-                              (current-time)
-                              (org-time-string-to-time
-                               (concat "<" (match-string 1 scheduled) ">")))))
-               (appt-add
-                (match-string 2 scheduled)
-                (org-get-heading t t t t)))))))))
+                         scheduled))
+               ;; `org-time-string-to-time' changes match data, so retain the
+               ;; captures before parsing the date.
+               (let ((date (match-string 1 scheduled))
+                     (time (match-string 2 scheduled))
+                     (heading (org-get-heading t t t t)))
+                 (unless (time-less-p
+                          (current-time)
+                          (org-time-string-to-time (concat "<" date ">")))
+                   (appt-add time heading))))))))
   (setq appt-message-warning-time 15
         appt-display-interval 5
         appt-display-mode-line nil

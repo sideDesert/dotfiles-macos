@@ -38,7 +38,8 @@
 (setq so-long-threshold 1000)
 
 ;; macOS trackpad horizontal scrolling
-(pixel-scroll-precision-mode 1)
+(after! smooth-scroll
+  (pixel-scroll-precision-mode 1))
 (setq hscroll-margin 10
       hscroll-step 1)
 

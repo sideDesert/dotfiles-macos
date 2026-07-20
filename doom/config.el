@@ -133,10 +133,9 @@
       :n "j" #'evil-next-visual-line
       :n "k" #'evil-previous-visual-line)
 
-;; Doom's C++ module gives these keys to `ccls-navigate' in C/C++ buffers.
-;; Restore the global window-navigation convention in those higher-precedence
-;; local maps; CCLS remains available through its other commands.
-(after! cc-mode
+;; CCLS installs its C/C++ maps lazily, after `cc-mode' loads.  Run this after
+;; CCLS so its navigation bindings cannot overwrite our window navigation.
+(after! ccls
   (evil-define-key* 'normal c-mode-map
     (kbd "C-h") #'evil-window-left
     (kbd "C-j") #'evil-window-down

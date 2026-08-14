@@ -47,7 +47,31 @@
 ;; the LSP session from tsconfig.json/Cargo.toml at the real root. Auto-guess
 ;; walks up to the actual project markers instead of asking.
 (after! lsp-mode
-  (setq lsp-auto-guess-root t))
+  (setq lsp-auto-guess-root t
+        ;; clangd supplies semanticTokens; lsp-mode leaves them off by default.
+        ;; They distinguish identifiers by their resolved C++ role, rather than
+        ;; only by the lexical syntax that font-lock can see.
+        lsp-semantic-tokens-enable t))
+
+;; Keep doom-oceanic-next, but give clangd's semantic token classes distinct
+;; colors.  The `lsp-face-semhl-*' faces are applied on top of C++ font-lock.
+(after! lsp-semantic-tokens
+  (custom-set-faces!
+    '(lsp-face-semhl-type :foreground "#FAC863")
+    '(lsp-face-semhl-class :foreground "#FAC863")
+    '(lsp-face-semhl-namespace :foreground "#C594C5" :weight bold)
+    '(lsp-face-semhl-function :foreground "#6699CC")
+    '(lsp-face-semhl-method :foreground "#5FB3B3")
+    '(lsp-face-semhl-variable :foreground "#C0C5CE")
+    '(lsp-face-semhl-parameter :foreground "#F99157")
+    '(lsp-face-semhl-member :foreground "#5FB3B3")
+    '(lsp-face-semhl-property :foreground "#5FB3B3")
+    '(lsp-face-semhl-constant :foreground "#F99157")
+    '(lsp-face-semhl-enum-member :foreground "#F99157")
+    '(lsp-face-semhl-keyword :foreground "#C594C5")
+    '(lsp-face-semhl-string :foreground "#99C794")
+    '(lsp-face-semhl-number :foreground "#F99157")
+    '(lsp-face-semhl-comment :foreground "#65737E")))
 
 (require 'alert)
 

@@ -180,6 +180,10 @@
     "C-j" #'evil-window-down
     "C-k" #'evil-window-up
     "C-l" #'evil-window-right
+    "C-S-h" #'shrink-window-horizontally
+    "C-S-j" #'shrink-window
+    "C-S-k" #'enlarge-window
+    "C-S-l" #'enlarge-window-horizontally
     "a"   #'treemacs-create-file))
 
 ;; ghostel (libghostty-in-Emacs) puts terminal buffers in evil *insert*
@@ -244,7 +248,11 @@
 (map! :after org
       :map org-mode-map
       :n "C-j" #'evil-window-down
-      :n "C-k" #'evil-window-up)
+      :n "C-k" #'evil-window-up
+      :n "C-S-h" #'shrink-window-horizontally
+      :n "C-S-j" #'shrink-window
+      :n "C-S-k" #'enlarge-window
+      :n "C-S-l" #'enlarge-window-horizontally)
 
 (defun siddarth/position-on-line-at-column (line-number column)
   (save-excursion
@@ -324,7 +332,11 @@
 (map! :after evil-org
       :map evil-org-mode-map
       :v "J" #'siddarth/move-selected-lines-down
-      :v "K" #'siddarth/move-selected-lines-up)
+      :v "K" #'siddarth/move-selected-lines-up
+      :n "C-S-h" #'shrink-window-horizontally
+      :n "C-S-j" #'shrink-window
+      :n "C-S-k" #'enlarge-window
+      :n "C-S-l" #'enlarge-window-horizontally)
 
 (map! :leader
       :prefix ("b" . "buffer")
@@ -407,8 +419,7 @@
   (map! "s-r" #'siddarth/toggle-terminal-sidebar
         "s-R" #'siddarth/toggle-agent-terminals-sidebar))
 
-;; `C-S-j' is unreliable on macOS. These are the dependable window-resize
-;; bindings in normal state: SPC w <, >, -, and +.
+;; Alternative window-resize bindings in normal state: SPC w <, >, -, and +.
 (map! :leader
       :prefix ("w" . "window")
       "<" #'shrink-window-horizontally

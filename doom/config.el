@@ -130,7 +130,21 @@
 (setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 14))
 
 (use-package! org-modern
-  :hook (org-mode . org-modern-mode))
+  :hook (org-mode . org-modern-mode)
+  :config
+  ;; Org-modern's default U+2BC6 triangle is absent from JetBrains Mono and
+  ;; falls back to macOS LastResort. Use Nerd Font private-use glyphs instead.
+  (require 'nerd-icons)
+  (let ((folded (nerd-icons-mdicon "nf-md-chevron_right"))
+        (expanded (nerd-icons-mdicon "nf-md-chevron_down")))
+    (setq org-modern-fold-stars
+          `((,folded . ,expanded)
+            (,folded . ,expanded)
+            (,folded . ,expanded)
+            (,folded . ,expanded)
+            (,folded . ,expanded))))
+  (set-face-attribute 'org-modern-symbol nil
+                      :family nerd-icons-font-family))
 
 ;; Emacs Plus's frame-transparency patch provides real macOS backdrop blur.
 ;; Keep this scoped to that build so regular Emacs never falls back to plain,

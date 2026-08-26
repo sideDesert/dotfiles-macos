@@ -130,6 +130,7 @@
 (setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 14))
 
 (use-package! org-modern
+  :after org
   :config
   (setq org-auto-align-tags nil
         org-tags-column 0
@@ -139,7 +140,10 @@
         org-hide-emphasis-markers t
         org-pretty-entities t
         org-agenda-tags-column 0
-        org-ellipsis "…")
+        org-ellipsis "…"
+        ;; Use circles for heading levels instead of folding arrows.
+        org-modern-star 'replace
+        org-modern-replace-stars "●●●●●")
   (global-org-modern-mode))
 
 ;; Emacs Plus's frame-transparency patch provides real macOS backdrop blur.

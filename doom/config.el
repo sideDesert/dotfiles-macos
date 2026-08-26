@@ -131,29 +131,26 @@
   ;; Do not give default-library tokens their own foreground: clangd applies
   ;; this modifier to both `std` and standard-library types such as `string`.
   '(lsp-face-semhl-default-library :inherit nil :foreground unspecified :weight normal)
-  '(lsp-face-semhl-class :foreground "#98BB6C" :weight normal)
-  '(lsp-face-semhl-type :foreground "#7FB4CA" :weight normal)
+  '(lsp-face-semhl-class :foreground "#7FB4CA" :weight normal)
+  '(lsp-face-semhl-interface :foreground "#98BB6C" :weight normal)
+  '(lsp-face-semhl-definition :foreground "#98BB6C" :weight normal)
+  '(lsp-face-semhl-type :foreground "#98BB6C" :weight normal)
   '(lsp-face-semhl-variable :foreground "#DCD7BA" :weight normal)
   '(lsp-face-semhl-parameter :foreground "#E46876" :weight normal)
   '(lsp-face-semhl-number :foreground "#E6C384" :weight normal)
   '(lsp-face-semhl-string :foreground "#E6C384" :weight normal))
-
-(defface siddarth/cpp-type-alias
-  '((t (:foreground "#98BB6C" :weight normal)))
-  "Face for selected C++ type aliases.")
 
 (defface siddarth/cpp-template-macro
   '((t (:foreground "#7AA89F" :weight normal)))
   "Face for the B+ tree template macro.")
 
 ;; Clangd reports these identifiers using broad semantic categories, so keep
-;; these two project-specific names visually distinct with targeted rules.
+;; this project-specific name visually distinct with a targeted rule.
 (defun siddarth/configure-cpp-specific-colors ()
   "Apply project-specific C++ colors after major-mode setup."
   (font-lock-add-keywords
    nil
-   '(("\\_<page_id_t\\_>" (0 'siddarth/cpp-type-alias prepend))
-     ("\\_<FULL_INDEX_TEMPLATE_ARGUMENTS\\_>"
+   '(("\\_<FULL_INDEX_TEMPLATE_ARGUMENTS\\_>"
       (0 'siddarth/cpp-template-macro prepend)))
    'append)
   (font-lock-flush))

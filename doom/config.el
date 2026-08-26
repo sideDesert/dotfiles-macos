@@ -241,6 +241,7 @@
     (kbd "C-S-j") #'shrink-window
     (kbd "C-S-k") #'enlarge-window
     (kbd "C-S-l") #'enlarge-window-horizontally
+    (kbd "S-<escape>") #'siddarth/toggle-window-maximize
     (kbd "C-z") (cmd! (ghostel-send-string "\x1a"))
     (kbd "s-1") #'+workspace/switch-to-0
     (kbd "s-2") #'+workspace/switch-to-1
@@ -255,6 +256,7 @@
   ;; Forward Ctrl-Z to terminal applications such as Codex from either Evil
   ;; state; it is the conventional terminal suspend byte (^Z).
   (evil-define-key* 'emacs evil-ghostel-mode-map
+    (kbd "S-<escape>") #'siddarth/toggle-window-maximize
     (kbd "C-z") (cmd! (ghostel-send-string "\x1a")))
 
   ;; ghostel's key-forwarding loop (`ghostel--define-terminal-keys') only

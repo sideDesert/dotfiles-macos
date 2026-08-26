@@ -136,7 +136,7 @@
   (defun siddarth/apply-macos-glass (&optional frame)
     "Apply frosted-glass styling to FRAME."
     (with-selected-frame (or frame (selected-frame))
-      (set-frame-parameter nil 'alpha-background 0.50)
+      (set-frame-parameter nil 'alpha-background 0.60)
       (set-frame-parameter nil 'ns-background-blur 30)
       (set-frame-parameter nil 'ns-alpha-elements '(ns-alpha-all))))
 

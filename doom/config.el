@@ -398,7 +398,8 @@
     (let ((buffer (get-buffer-create "*Agent Terminals*")))
       (with-current-buffer buffer
         (siddarth/agent-terminals-mode)
-        (setq-local tabulated-list-revert-hook #'siddarth/agent-terminals-refresh)
+        (add-hook 'tabulated-list-revert-hook
+                  #'siddarth/agent-terminals-refresh nil t)
         (local-set-key (kbd "RET") #'siddarth/agent-terminals-visit)
         (siddarth/agent-terminals-refresh))
       (siddarth/toggle-side-buffer buffer 1)))

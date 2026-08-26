@@ -128,7 +128,8 @@
 ;; Keep this scoped to that build so regular Emacs never falls back to plain,
 ;; unblurred transparency.
 (when (or (bound-and-true-p ns-emacs-plus-version)
-          (string-match-p "/emacs-plus@31/" invocation-directory))
+          (string-match-p "/emacs-plus@31/" invocation-directory)
+          (string-match-p "/Emacs Glass\\.app/" invocation-directory))
   ;; Keep Emacs Glass independent from the Emacs 30 server.
   (setq server-name "emacs-glass")
 

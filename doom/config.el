@@ -68,9 +68,9 @@
   (custom-set-faces!
     '(lsp-face-semhl-type :foreground "#FAC863")
     '(lsp-face-semhl-class :foreground "#FAC863")
-    '(lsp-face-semhl-namespace :foreground "#C594r5" :weight bold)
+    '(lsp-face-semhl-namespace :foreground "#C594C5" :weight bold)
     '(lsp-face-semhl-function :foreground "#6699CC")
-    '(lsp-face-semhl-method :foreground "#5FB3B3"r
+    '(lsp-face-semhl-method :foreground "#5FB3B3")
     '(lsp-face-semhl-variable :foreground "#C0C5CE")
     '(lsp-face-semhl-parameter :foreground "#F99157")
     '(lsp-face-semhl-member :foreground "#5FB3B3")
@@ -441,7 +441,7 @@
         (consult-xref fetcher alist))))
 
   (setq xref-show-definitions-function
-        #'siddarth/xref-show-definitions))
+        #'siddarth/xref-show-definitions)))
 
 ;; Neutralize M-m everywhere so Raycast's Opt+M hotkey never fires an Emacs
 ;; command when the frame happens to be focused. We route it through an

@@ -137,7 +137,7 @@
     "Apply frosted-glass styling to FRAME."
     (with-selected-frame (or frame (selected-frame))
       (set-frame-parameter nil 'alpha-background 0.65)
-      (set-frame-parameter nil 'ns-background-blur 30)
+      (set-frame-parameter nil 'ns-background-blur 50)
       (set-frame-parameter nil 'ns-alpha-elements '(ns-alpha-all))))
 
   ;; Blur must exist while the native NSWindow is being created.

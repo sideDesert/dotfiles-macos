@@ -48,10 +48,9 @@
 ;; walks up to the actual project markers instead of asking.
 (after! lsp-mode
   (setq lsp-auto-guess-root t
-        ;; clangd supplies semanticTokens; lsp-mode leaves them off by default.
-        ;; They distinguish identifiers by their resolved C++ role, rather than
-        ;; only by the lexical syntax that font-lock can see.
-        lsp-semantic-tokens-enable nil))
+        ;; Let clangd distinguish identifiers by their resolved C++ role, rather
+        ;; than relying only on the lexical syntax that font-lock can see.
+        lsp-semantic-tokens-enable t))
 
 ;; Prefer Homebrew LLVM when installed; otherwise retain the working macOS
 ;; clangd.  clangd resolves this relative directory from each project root.

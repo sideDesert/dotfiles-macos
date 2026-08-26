@@ -115,9 +115,10 @@
         (lambda (min-to-app new-time msg)
           (alert msg :title (format "Org Appointment in %s min" min-to-app) :severity 'high)))
   (appt-activate 1)
-  (my/org-agenda-to-appt-with-repeaters)
+  ;; Org files opened during startup may not have entered `org-mode' yet.
+  ;; Wait until startup/redisplay has settled before scanning agenda files.
+  (run-with-idle-timer 5 nil #'my/org-agenda-to-appt-with-repeaters)
   (run-with-timer 300 300 #'my/org-agenda-to-appt-with-repeaters)
-  (add-hook 'org-finalize-agenda-hook #'my/org-agenda-to-appt-with-repeaters)
   (add-hook 'org-mode-hook
     (lambda ()
       (add-hook 'after-save-hook #'my/org-agenda-to-appt-with-repeaters nil t))))

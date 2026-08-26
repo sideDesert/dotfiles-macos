@@ -124,6 +124,10 @@
 
 (setq doom-theme 'kanagawa-wave)
 
+;; Keep Doom's default and fixed-pitch faces on the installed JetBrains Mono
+;; Nerd Font build. The plain "JetBrains Mono" family is not installed here.
+(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 14))
+
 (use-package! org-modern
   :hook (org-mode . org-modern-mode))
 

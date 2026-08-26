@@ -174,10 +174,6 @@
 
 (map! :n "C-h" #'evil-window-left
       :n "C-j" #'evil-window-down
-
-Determining an Emacsclient executable suitable for the
-current Emacs instance failed.  For more information
-please see https://github.com/magit/magit/wiki/Emacsclient.
       :n "C-k" #'evil-window-up
       :n "C-l" #'evil-window-right
       "C-S-h" #'shrink-window-horizontally

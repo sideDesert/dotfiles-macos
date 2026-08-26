@@ -128,7 +128,9 @@
 (custom-set-faces!
   '(lsp-face-semhl-macro :foreground "#FFA066" :weight normal)
   '(lsp-face-semhl-namespace :foreground "#FFA066" :weight normal)
-  '(lsp-face-semhl-default-library :foreground "#FFA066" :weight normal)
+  ;; Do not give default-library tokens their own foreground: clangd applies
+  ;; this modifier to both `std` and standard-library types such as `string`.
+  '(lsp-face-semhl-default-library :inherit nil :foreground unspecified :weight normal)
   '(lsp-face-semhl-class :foreground "#98BB6C" :weight normal)
   '(lsp-face-semhl-type :foreground "#7FB4CA" :weight normal)
   '(lsp-face-semhl-variable :foreground "#DCD7BA" :weight normal)

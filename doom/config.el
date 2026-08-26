@@ -162,7 +162,13 @@
   (add-to-list 'default-frame-alist '(ns-alpha-elements ns-alpha-all))
   (add-hook 'after-make-frame-functions #'siddarth/apply-macos-glass)
   (when (display-graphic-p)
-    (siddarth/apply-macos-glass)))
+    (siddarth/apply-macos-glass))
+
+  ;; The renamed app bundle defeats With-Editor's "Emacs.app" path heuristic.
+  ;; Point it at the matching client through Homebrew's stable opt symlink.
+  (after! with-editor
+    (setq with-editor-emacsclient-executable
+          "/opt/homebrew/opt/emacs-plus@31/bin/emacsclient")))
 
 ;; Magit's `executable-find "git"' walks the full PATH on macOS (Homebrew,
 ;; /usr/bin shim that forwards to Xcode CLT, etc.) on every invocation,

@@ -136,12 +136,12 @@
   (defun siddarth/apply-macos-glass (&optional frame)
     "Apply frosted-glass styling to FRAME."
     (with-selected-frame (or frame (selected-frame))
-      (set-frame-parameter nil 'alpha-background 0.85)
+      (set-frame-parameter nil 'alpha-background 0.70)
       (set-frame-parameter nil 'ns-background-blur 30)
       (set-frame-parameter nil 'ns-alpha-elements '(ns-alpha-all))))
 
   ;; Blur must exist while the native NSWindow is being created.
-  (add-to-list 'default-frame-alist '(alpha-background . 0.85))
+  (add-to-list 'default-frame-alist '(alpha-background . 0.70))
   (add-to-list 'default-frame-alist '(ns-background-blur . 30))
   (add-to-list 'default-frame-alist '(ns-alpha-elements ns-alpha-all))
   (add-hook 'after-make-frame-functions #'siddarth/apply-macos-glass)

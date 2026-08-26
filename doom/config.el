@@ -142,7 +142,7 @@
     (lambda ()
       (add-hook 'after-save-hook #'my/org-agenda-to-appt-with-repeaters nil t))))
 
-(setq doom-theme 'kanagawa)
+(setq doom-theme 'kanagawa-wave)
 
 ;; Magit's `executable-find "git"' walks the full PATH on macOS (Homebrew,
 ;; /usr/bin shim that forwards to Xcode CLT, etc.) on every invocation,

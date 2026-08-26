@@ -124,6 +124,13 @@
 
 (setq doom-theme 'kanagawa-wave)
 
+;; Keep C++ semantic highlighting readable without bold variable declarations.
+;; These are Kanagawa palette colors: light blue, muted green, and orange.
+(custom-set-faces!
+  '(font-lock-variable-name-face :foreground "#7FB4CA" :weight normal)
+  '(font-lock-variable-use-face :foreground "#98BB6C" :weight normal)
+  '(font-lock-preprocessor-face :foreground "#FFA066" :weight normal))
+
 ;; Keep Doom's default and fixed-pitch faces on the installed JetBrains Mono
 ;; Nerd Font build. The plain "JetBrains Mono" family is not installed here.
 (setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 14))

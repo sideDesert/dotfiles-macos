@@ -341,6 +341,80 @@
 
 (map! "s-b" #'+treemacs/toggle)
 
+;; A persistent terminal belongs in a side window, not in the current editing
+;; window. Cmd-R toggles it; use `codex', `claude', or `opencode' there.
+(after! ghostel
+  (defconst siddarth/terminal-buffer-name "*terminal*")
+
+  (defun siddarth/toggle-side-buffer (buffer slot)
+    "Toggle BUFFER in the right side window at SLOT."
+    (if-let ((window (get-buffer-window buffer)))
+        (delete-window window)
+      (select-window
+       (display-buffer-in-side-window
+        buffer `((side . right) (slot . ,slot) (window-width . 0.38))))))
+
+  (defun siddarth/toggle-terminal-sidebar ()
+    "Toggle the persistent Ghostel terminal sidebar."
+    (interactive)
+    (siddarth/toggle-side-buffer
+     (or (get-buffer siddarth/terminal-buffer-name)
+         (ghostel-create siddarth/terminal-buffer-name))
+     0))
+
+  (defun siddarth/agent-terminal-p (buffer)
+    "Return non-nil when BUFFER is a Ghostel terminal for a coding agent."
+    (with-current-buffer buffer
+      (and (derived-mode-p 'ghostel-mode)
+           (let ((name (buffer-name))
+                 (title (when (fboundp 'ghostel-annotate-buffer)
+                          (ghostel-annotate-buffer (buffer-name)))))
+             (string-match-p
+              "codex\\|claude\\|opencode"
+              (downcase (concat name " " (or title ""))))))))
+
+  (define-derived-mode siddarth/agent-terminals-mode tabulated-list-mode "Agent Terminals"
+    "List live Ghostel terminals running coding agents."
+    (setq tabulated-list-format [("Agent terminal" 60 t)])
+    (tabulated-list-init-header))
+
+  (defun siddarth/agent-terminals-refresh ()
+    "Refresh the agent-terminal list."
+    (setq tabulated-list-entries
+          (mapcar (lambda (buffer)
+                    (list buffer (vector (buffer-name buffer))))
+                  (seq-filter #'siddarth/agent-terminal-p (buffer-list))))
+    (tabulated-list-print t))
+
+  (defun siddarth/agent-terminals-visit ()
+    "Visit the terminal at point."
+    (interactive)
+    (when-let ((buffer (tabulated-list-get-id)))
+      (pop-to-buffer buffer)))
+
+  (defun siddarth/toggle-agent-terminals-sidebar ()
+    "Toggle a side list of live Codex, Claude Code, and OpenCode terminals."
+    (interactive)
+    (let ((buffer (get-buffer-create "*Agent Terminals*")))
+      (with-current-buffer buffer
+        (siddarth/agent-terminals-mode)
+        (setq-local tabulated-list-revert-hook #'siddarth/agent-terminals-refresh)
+        (local-set-key (kbd "RET") #'siddarth/agent-terminals-visit)
+        (siddarth/agent-terminals-refresh))
+      (siddarth/toggle-side-buffer buffer 1)))
+
+  (map! "s-r" #'siddarth/toggle-terminal-sidebar
+        "s-R" #'siddarth/toggle-agent-terminals-sidebar))
+
+;; `C-S-j' is unreliable on macOS. These are the dependable window-resize
+;; bindings in normal state: SPC w <, >, -, and +.
+(map! :leader
+      :prefix ("w" . "window")
+      "<" #'shrink-window-horizontally
+      ">" #'enlarge-window-horizontally
+      "-" #'shrink-window
+      "+" #'enlarge-window)
+
 (map! :n "C-d" (cmd! (evil-scroll-down nil)
                      (evil-scroll-line-to-center nil))
       :n "C-u" (cmd! (evil-scroll-up nil)

@@ -124,12 +124,16 @@
 
 (setq doom-theme 'kanagawa-wave)
 
-;; Keep C++ semantic highlighting readable without bold variable declarations.
-;; These are Kanagawa palette colors: light blue, muted green, and orange.
+;; C++ semantic highlighting: use distinct Kanagawa colors for each symbol kind.
 (custom-set-faces!
-  '(font-lock-variable-name-face :foreground "#7FB4CA" :weight normal)
-  '(font-lock-variable-use-face :foreground "#98BB6C" :weight normal)
-  '(font-lock-preprocessor-face :foreground "#FFA066" :weight normal))
+  '(lsp-face-semhl-macro :foreground "#FFA066" :weight normal)
+  '(lsp-face-semhl-namespace :foreground "#FFA066" :weight normal)
+  '(lsp-face-semhl-class :foreground "#98BB6C" :weight normal)
+  '(lsp-face-semhl-type :foreground "#98BB6C" :weight normal)
+  '(lsp-face-semhl-variable :foreground "#DCD7BA" :weight normal)
+  '(lsp-face-semhl-parameter :foreground "#E46876" :weight normal)
+  '(lsp-face-semhl-number :foreground "#E6C384" :weight normal)
+  '(lsp-face-semhl-string :foreground "#E6C384" :weight normal))
 
 ;; Keep Doom's default and fixed-pitch faces on the installed JetBrains Mono
 ;; Nerd Font build. The plain "JetBrains Mono" family is not installed here.

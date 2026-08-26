@@ -370,24 +370,40 @@
 ;; window. Cmd-R toggles it; use `codex', `claude', or `opencode' there.
 (after! ghostel
   (defconst siddarth/terminal-buffer-name "*terminal*")
+  (defvar siddarth/terminal-sidebar-buffer nil)
 
-  (defun siddarth/toggle-side-buffer (buffer slot)
-    "Toggle BUFFER in the right side window at SLOT."
-    (if-let ((window (get-buffer-window buffer)))
-        (delete-window window)
-      (select-window
-       (display-buffer-in-side-window
-        buffer `((side . right) (slot . ,slot) (window-width . 0.38))))))
+  (defun siddarth/terminal-sidebar-window ()
+    "Return the terminal sidebar window in the selected frame."
+    (seq-find (lambda (window)
+                (window-parameter window 'siddarth-terminal-sidebar))
+              (window-list nil 'no-minibuf)))
+
+  (defun siddarth/create-terminal ()
+    "Create and return a fresh Ghostel terminal without changing layout."
+    (save-window-excursion
+      (let ((ghostel-buffer-name (generate-new-buffer-name "*terminal*")))
+        (ghostel))))
+
+  (defun siddarth/show-terminal-sidebar (buffer)
+    "Show BUFFER in the persistent right-hand terminal sidebar."
+    (setq siddarth/terminal-sidebar-buffer buffer)
+    (let ((window (or (siddarth/terminal-sidebar-window)
+                      (display-buffer-in-side-window
+                       buffer '((side . right) (slot . 0) (window-width . 0.38))))))
+      (set-window-parameter window 'siddarth-terminal-sidebar t)
+      (set-window-buffer window buffer)
+      (select-window window)))
 
   (defun siddarth/toggle-terminal-sidebar ()
-    "Toggle the persistent Ghostel terminal sidebar."
+    "Toggle the selected terminal in the persistent sidebar."
     (interactive)
-    (siddarth/toggle-side-buffer
-     (or (get-buffer siddarth/terminal-buffer-name)
-         (save-window-excursion
-           (let ((ghostel-buffer-name siddarth/terminal-buffer-name))
-             (ghostel))))
-     0))
+    (if-let ((window (siddarth/terminal-sidebar-window)))
+        (delete-window window)
+      (siddarth/show-terminal-sidebar
+       (or (and (buffer-live-p siddarth/terminal-sidebar-buffer)
+                siddarth/terminal-sidebar-buffer)
+           (get-buffer siddarth/terminal-buffer-name)
+           (siddarth/create-terminal)))))
 
   (defun siddarth/agent-terminal-p (buffer)
     "Return non-nil when BUFFER is a Ghostel terminal for a coding agent."
@@ -407,16 +423,25 @@
   (defun siddarth/agent-terminals-refresh ()
     "Refresh the agent-terminal list."
     (setq tabulated-list-entries
-          (mapcar (lambda (buffer)
-                    (list buffer (vector (buffer-name buffer))))
-                  (seq-filter #'siddarth/agent-terminal-p (buffer-list))))
+          (cons '(new-terminal ["[New terminal]"])
+                (mapcar (lambda (buffer)
+                          (list buffer (vector (buffer-name buffer))))
+                        (seq-filter #'siddarth/agent-terminal-p (buffer-list)))))
     (tabulated-list-print t))
 
   (defun siddarth/agent-terminals-visit ()
-    "Visit the terminal at point."
+    "Put the selected terminal in the Cmd-R sidebar."
     (interactive)
-    (when-let ((buffer (tabulated-list-get-id)))
-      (pop-to-buffer buffer)))
+    (when-let ((choice (tabulated-list-get-id)))
+      (quit-window)
+      (siddarth/show-terminal-sidebar
+       (if (eq choice 'new-terminal)
+           (siddarth/create-terminal)
+         choice))))
+
+  (after! evil
+    (evil-define-key 'normal siddarth/agent-terminals-mode-map
+      (kbd "RET") #'siddarth/agent-terminals-visit))
 
   (defun siddarth/toggle-agent-terminals-sidebar ()
     "Toggle a bottom picker for live Codex, Claude Code, and OpenCode terminals."
@@ -426,7 +451,6 @@
         (siddarth/agent-terminals-mode)
         (add-hook 'tabulated-list-revert-hook
                   #'siddarth/agent-terminals-refresh nil t)
-        (local-set-key (kbd "RET") #'siddarth/agent-terminals-visit)
         (siddarth/agent-terminals-refresh))
       (if-let ((window (get-buffer-window buffer)))
           (delete-window window)

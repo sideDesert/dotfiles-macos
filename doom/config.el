@@ -173,12 +173,11 @@
 (setq vc-handled-backends (delq 'Git vc-handled-backends))
 
 (map! :n "C-h" #'evil-window-left
-      :n "C-j" #'evil-window-dow⛔ Warning (with-editor): Cannot determine a suitable Emacsclient
+      :n "C-j" #'evil-window-down
 
 Determining an Emacsclient executable suitable for the
 current Emacs instance failed.  For more information
 please see https://github.com/magit/magit/wiki/Emacsclient.
-n
       :n "C-k" #'evil-window-up
       :n "C-l" #'evil-window-right
       "C-S-h" #'shrink-window-horizontally

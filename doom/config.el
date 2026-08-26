@@ -393,12 +393,11 @@
     "Return non-nil when BUFFER is a Ghostel terminal for a coding agent."
     (with-current-buffer buffer
       (and (derived-mode-p 'ghostel-mode)
-           (let ((name (buffer-name))
-                 (title (when (fboundp 'ghostel-annotate-buffer)
-                          (ghostel-annotate-buffer (buffer-name)))))
-             (string-match-p
-              "codex\\|claude\\|opencode"
-              (downcase (concat name " " (or title ""))))))))
+           (save-excursion
+             (save-restriction
+               (widen)
+               (goto-char (point-min))
+               (re-search-forward "codex\\|claude\\|opencode" nil t))))))
 
   (define-derived-mode siddarth/agent-terminals-mode tabulated-list-mode "Agent Terminals"
     "List live Ghostel terminals running coding agents."
@@ -420,7 +419,7 @@
       (pop-to-buffer buffer)))
 
   (defun siddarth/toggle-agent-terminals-sidebar ()
-    "Toggle a side list of live Codex, Claude Code, and OpenCode terminals."
+    "Toggle a bottom picker for live Codex, Claude Code, and OpenCode terminals."
     (interactive)
     (let ((buffer (get-buffer-create "*Agent Terminals*")))
       (with-current-buffer buffer
@@ -429,7 +428,10 @@
                   #'siddarth/agent-terminals-refresh nil t)
         (local-set-key (kbd "RET") #'siddarth/agent-terminals-visit)
         (siddarth/agent-terminals-refresh))
-      (siddarth/toggle-side-buffer buffer 1)))
+      (if-let ((window (get-buffer-window buffer)))
+          (delete-window window)
+        (select-window
+         (display-buffer-at-bottom buffer '((window-height . 0.25)))))))
 
   (map! "s-r" #'siddarth/toggle-terminal-sidebar
         "s-R" #'siddarth/toggle-agent-terminals-sidebar))

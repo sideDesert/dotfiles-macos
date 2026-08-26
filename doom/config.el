@@ -138,6 +138,24 @@
   '(lsp-face-semhl-number :foreground "#E6C384" :weight normal)
   '(lsp-face-semhl-string :foreground "#E6C384" :weight normal))
 
+(defface siddarth/cpp-type-alias
+  '((t (:foreground "#98BB6C" :weight normal)))
+  "Face for selected C++ type aliases.")
+
+(defface siddarth/cpp-template-macro
+  '((t (:foreground "#7AA89F" :weight normal)))
+  "Face for the B+ tree template macro.")
+
+;; Clangd reports these identifiers using broad semantic categories, so keep
+;; these two project-specific names visually distinct with targeted rules.
+(after! cc-mode
+  (dolist (mode '(c++-mode c++-ts-mode))
+    (font-lock-add-keywords
+     mode
+     '(("\\_<page_id_t\\_>" (0 'siddarth/cpp-type-alias prepend))
+       ("\\_<FULL_INDEX_TEMPLATE_ARGUMENTS\\_>"
+        (0 'siddarth/cpp-template-macro prepend))))))
+
 ;; Keep Doom's default and fixed-pitch faces on the installed JetBrains Mono
 ;; Nerd Font build. The plain "JetBrains Mono" family is not installed here.
 (setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 14))

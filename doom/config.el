@@ -172,6 +172,23 @@
       :n "j" #'evil-next-visual-line
       :n "k" #'evil-previous-visual-line)
 
+;; Focus the selected split temporarily without making the entire macOS frame
+;; fullscreen.  Keep the saved layout on the frame so a second invocation
+;; restores precisely the windows that were visible before maximizing.
+(defun siddarth/toggle-window-maximize ()
+  "Toggle the selected window between focused and its previous layout."
+  (interactive)
+  (let ((saved-layout (frame-parameter nil 'siddarth--saved-window-layout)))
+    (if saved-layout
+        (progn
+          (set-window-configuration saved-layout)
+          (set-frame-parameter nil 'siddarth--saved-window-layout nil))
+      (set-frame-parameter nil 'siddarth--saved-window-layout
+                           (current-window-configuration))
+      (delete-other-windows))))
+
+(map! "S-<escape>" #'siddarth/toggle-window-maximize)
+
 ;; Treemacs runs in its own `evil-treemacs-state', not evil normal state, so
 ;; the global :n bindings above never reach it. Mirror them here.
 (after! treemacs-evil

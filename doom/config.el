@@ -211,6 +211,10 @@
     (kbd "C-j") #'evil-window-down
     (kbd "C-k") #'evil-window-up
     (kbd "C-l") #'evil-window-right
+    (kbd "C-S-h") #'shrink-window-horizontally
+    (kbd "C-S-j") #'shrink-window
+    (kbd "C-S-k") #'enlarge-window
+    (kbd "C-S-l") #'enlarge-window-horizontally
     (kbd "C-z") (cmd! (ghostel-send-string "\x1a"))
     (kbd "s-1") #'+workspace/switch-to-0
     (kbd "s-2") #'+workspace/switch-to-1

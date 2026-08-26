@@ -143,7 +143,7 @@
         org-ellipsis "…"
         ;; Use circles for heading levels instead of folding arrows.
         org-modern-star 'replace
-        org-modern-replace-stars "●●●●●")
+        org-modern-replace-stars "○◉◈◇✳")
   (global-org-modern-mode))
 
 ;; Emacs Plus's frame-transparency patch provides real macOS backdrop blur.

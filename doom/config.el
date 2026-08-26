@@ -441,7 +441,7 @@
         (consult-xref fetcher alist))))
 
   (setq xref-show-definitions-function
-        #'siddarth/xref-show-definitions)))
+        #'siddarth/xref-show-definitions))
 
 ;; Neutralize M-m everywhere so Raycast's Opt+M hotkey never fires an Emacs
 ;; command when the frame happens to be focused. We route it through an

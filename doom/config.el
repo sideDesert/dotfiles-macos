@@ -142,6 +142,8 @@
     (lambda ()
       (add-hook 'after-save-hook #'my/org-agenda-to-appt-with-repeaters nil t))))
 
+(add-to-list 'custom-theme-load-path
+             (file-name-directory (locate-library "doom-rose-pine-theme")))
 (setq doom-theme 'doom-rose-pine)
 
 ;; Magit's `executable-find "git"' walks the full PATH on macOS (Homebrew,

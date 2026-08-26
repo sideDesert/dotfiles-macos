@@ -166,6 +166,8 @@
 
   ;; The renamed app bundle defeats With-Editor's "Emacs.app" path heuristic.
   ;; Point it at the matching client through Homebrew's stable opt symlink.
+  (setq with-editor-emacsclient-executable
+        "/opt/homebrew/opt/emacs-plus@31/bin/emacsclient")
   (after! with-editor
     (setq with-editor-emacsclient-executable
           "/opt/homebrew/opt/emacs-plus@31/bin/emacsclient")))

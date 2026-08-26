@@ -384,7 +384,9 @@
     (interactive)
     (siddarth/toggle-side-buffer
      (or (get-buffer siddarth/terminal-buffer-name)
-         (ghostel-create siddarth/terminal-buffer-name))
+         (save-window-excursion
+           (let ((ghostel-buffer-name siddarth/terminal-buffer-name))
+             (ghostel))))
      0))
 
   (defun siddarth/agent-terminal-p (buffer)

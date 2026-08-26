@@ -133,16 +133,16 @@
   :hook (org-mode . org-modern-mode)
   :config
   ;; Org-modern's default U+2BC6 triangle is absent from JetBrains Mono and
-  ;; falls back to macOS LastResort. Use a Nerd Font chevron only for folded
-  ;; headings; expanded headings stay visually quiet.
+  ;; falls back to macOS LastResort. Use the same Nerd Font chevron for both
+  ;; states so headings never show a down arrow or an unsupported blank glyph.
   (require 'nerd-icons)
   (let ((folded (nerd-icons-mdicon "nf-md-chevron_right")))
     (setq org-modern-fold-stars
-          `((,folded . " ")
-            (,folded . " ")
-            (,folded . " ")
-            (,folded . " ")
-            (,folded . " "))))
+          `((,folded . ,folded)
+            (,folded . ,folded)
+            (,folded . ,folded)
+            (,folded . ,folded)
+            (,folded . ,folded))))
   (set-face-attribute 'org-modern-symbol nil
                       :family nerd-icons-font-family))
 

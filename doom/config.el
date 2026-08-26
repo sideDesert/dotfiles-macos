@@ -209,7 +209,7 @@
     (kbd "C-j") #'evil-window-down
     (kbd "C-k") #'evil-window-up
     (kbd "C-l") #'evil-window-right
-    (kbd "C-z") #'evil-emacs-state
+    (kbd "C-z") (cmd! (ghostel-send-string "\x1a"))
     (kbd "s-1") #'+workspace/switch-to-0
     (kbd "s-2") #'+workspace/switch-to-1
     (kbd "s-3") #'+workspace/switch-to-2
@@ -220,10 +220,10 @@
     (kbd "s-8") #'+workspace/switch-to-7
     (kbd "s-9") #'+workspace/switch-to-final)
 
-  ;; `C-z' must also be pinned in Emacs state; otherwise Ghostel's terminal
-  ;; map can swallow it instead of returning to Evil insert state.
+  ;; Forward Ctrl-Z to terminal applications such as Codex from either Evil
+  ;; state; it is the conventional terminal suspend byte (^Z).
   (evil-define-key* 'emacs evil-ghostel-mode-map
-    (kbd "C-z") #'evil-exit-emacs-state)
+    (kbd "C-z") (cmd! (ghostel-send-string "\x1a")))
 
   ;; ghostel's key-forwarding loop (`ghostel--define-terminal-keys') only
   ;; builds bindings for the "S-" "C-" "M-" "C-S-" "M-S-" "C-M-" modifier

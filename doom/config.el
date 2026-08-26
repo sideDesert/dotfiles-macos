@@ -68,9 +68,9 @@
   (custom-set-faces!
     '(lsp-face-semhl-type :foreground "#FAC863")
     '(lsp-face-semhl-class :foreground "#FAC863")
-    '(lsp-face-semhl-namespace :foreground "#C594C5" :weight bold)
+    '(lsp-face-semhl-namespace :foreground "#C594r5" :weight bold)
     '(lsp-face-semhl-function :foreground "#6699CC")
-    '(lsp-face-semhl-method :foreground "#5FB3B3")
+    '(lsp-face-semhl-method :foreground "#5FB3B3"r
     '(lsp-face-semhl-variable :foreground "#C0C5CE")
     '(lsp-face-semhl-parameter :foreground "#F99157")
     '(lsp-face-semhl-member :foreground "#5FB3B3")
@@ -142,9 +142,7 @@
     (lambda ()
       (add-hook 'after-save-hook #'my/org-agenda-to-appt-with-repeaters nil t))))
 
-(add-to-list 'custom-theme-load-path
-             (file-name-directory (locate-library "doom-rose-pine-theme")))
-(setq doom-theme 'doom-rose-pine)
+(setq doom-theme 'rose-pine)
 
 ;; Magit's `executable-find "git"' walks the full PATH on macOS (Homebrew,
 ;; /usr/bin shim that forwards to Xcode CLT, etc.) on every invocation,

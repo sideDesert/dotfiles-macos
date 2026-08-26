@@ -53,6 +53,15 @@
         ;; only by the lexical syntax that font-lock can see.
         lsp-semantic-tokens-enable t))
 
+;; Prefer Homebrew LLVM when installed; otherwise retain the working macOS
+;; clangd.  clangd resolves this relative directory from each project root.
+(after! lsp-clangd
+  (when (file-executable-p "/opt/homebrew/opt/llvm/bin/clangd")
+    (setq lsp-clients-clangd-executable
+          "/opt/homebrew/opt/llvm/bin/clangd"))
+  (cl-pushnew "--compile-commands-dir=build" lsp-clients-clangd-args)
+  (set-lsp-priority! 'clangd 2))
+
 ;; Keep doom-oceanic-next, but give clangd's semantic token classes distinct
 ;; colors.  The `lsp-face-semhl-*' faces are applied on top of C++ font-lock.
 (after! lsp-semantic-tokens
@@ -162,20 +171,6 @@
       ;; Follow wrapped screen lines instead of jumping between file lines.
       :n "j" #'evil-next-visual-line
       :n "k" #'evil-previous-visual-line)
-
-;; CCLS installs its C/C++ maps lazily, after `cc-mode' loads.  Run this after
-;; CCLS so its navigation bindings cannot overwrite our window navigation.
-(after! ccls
-  (evil-define-key* 'normal c-mode-map
-    (kbd "C-h") #'evil-window-left
-    (kbd "C-j") #'evil-window-down
-    (kbd "C-k") #'evil-window-up
-    (kbd "C-l") #'evil-window-right)
-  (evil-define-key* 'normal c++-mode-map
-    (kbd "C-h") #'evil-window-left
-    (kbd "C-j") #'evil-window-down
-    (kbd "C-k") #'evil-window-up
-    (kbd "C-l") #'evil-window-right))
 
 ;; Treemacs runs in its own `evil-treemacs-state', not evil normal state, so
 ;; the global :n bindings above never reach it. Mirror them here.

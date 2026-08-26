@@ -56,3 +56,6 @@
 (package! git-auto-commit-mode)
 (package! rose-pine-theme
   :recipe (:host github :repo "rose-pine/rose-pine-theme"))
+
+;; Doom's cc module supports ccls, but this setup deliberately uses clangd.
+(package! ccls :disable t)

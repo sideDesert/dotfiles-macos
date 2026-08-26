@@ -149,6 +149,9 @@
 ;; unblurred transparency.
 (when (or (bound-and-true-p ns-emacs-plus-version)
           (string-match-p "/emacs-plus@31/" invocation-directory))
+  ;; Keep Emacs Glass independent from the Emacs 30 server.
+  (setq server-name "emacs-glass")
+
   (defun siddarth/apply-macos-glass (&optional frame)
     "Apply frosted-glass styling to FRAME."
     (with-selected-frame (or frame (selected-frame))

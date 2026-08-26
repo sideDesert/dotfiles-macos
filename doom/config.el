@@ -185,7 +185,8 @@
           (set-frame-parameter nil 'siddarth--saved-window-layout nil))
       (set-frame-parameter nil 'siddarth--saved-window-layout
                            (current-window-configuration))
-      (delete-other-windows))))
+      (let ((ignore-window-parameters t))
+        (delete-other-windows)))))
 
 (map! "S-<escape>" #'siddarth/toggle-window-maximize)
 

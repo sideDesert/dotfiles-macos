@@ -138,22 +138,17 @@
           (string-match-p "/emacs-plus@31/" invocation-directory)
           (string-match-p "/Emacs Glass\\.app/" invocation-directory))
   ;; Keep Emacs Glass independent from the Emacs 30 server.
+  (require 'server)
   (setq server-name "emacs-glass")
 
-  (defun siddarth/apply-macos-glass (&optional frame)
-    "Apply frosted-glass styling to FRAME."
-    (with-selected-frame (or frame (selected-frame))
-      (set-frame-parameter nil 'alpha-background 0.65)
-      (set-frame-parameter nil 'ns-background-blur 50)
-      (set-frame-parameter nil 'ns-alpha-elements '(ns-alpha-all))))
+  ;; Make the Glass server available before Doom finishes loading packages.
+  (unless (server-running-p)
+    (server-start))
 
-  ;; Blur must exist while the native NSWindow is being created.
-  (add-to-list 'default-frame-alist '(alpha-background . 0.50))
-  (add-to-list 'default-frame-alist '(ns-background-blur . 30))
+  ;; Set these once, before the native NSWindow is created.
+  (add-to-list 'default-frame-alist '(alpha-background . 0.65))
+  (add-to-list 'default-frame-alist '(ns-background-blur . 50))
   (add-to-list 'default-frame-alist '(ns-alpha-elements ns-alpha-all))
-  (add-hook 'after-make-frame-functions #'siddarth/apply-macos-glass)
-  (when (display-graphic-p)
-    (siddarth/apply-macos-glass))
 
   ;; The renamed app bundle defeats With-Editor's "Emacs.app" path heuristic.
   ;; Point it at the matching client through Homebrew's stable opt symlink.

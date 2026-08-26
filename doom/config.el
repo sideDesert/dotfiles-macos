@@ -141,7 +141,7 @@
       (set-frame-parameter nil 'ns-alpha-elements '(ns-alpha-all))))
 
   ;; Blur must exist while the native NSWindow is being created.
-  (add-to-list 'default-frame-alist '(alpha-background . 0.70))
+  (add-to-list 'default-frame-alist '(alpha-background . 0.50))
   (add-to-list 'default-frame-alist '(ns-background-blur . 30))
   (add-to-list 'default-frame-alist '(ns-alpha-elements ns-alpha-all))
   (add-hook 'after-make-frame-functions #'siddarth/apply-macos-glass)

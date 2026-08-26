@@ -218,6 +218,11 @@
     (kbd "s-8") #'+workspace/switch-to-7
     (kbd "s-9") #'+workspace/switch-to-final)
 
+  ;; `C-z' must also be pinned in Emacs state; otherwise Ghostel's terminal
+  ;; map can swallow it instead of returning to Evil insert state.
+  (evil-define-key* 'emacs evil-ghostel-mode-map
+    (kbd "C-z") #'evil-exit-emacs-state)
+
   ;; ghostel's key-forwarding loop (`ghostel--define-terminal-keys') only
   ;; builds bindings for the "S-" "C-" "M-" "C-S-" "M-S-" "C-M-" modifier
   ;; combos -- it never generates an "s-" (Cmd) variant, so s-<backspace>

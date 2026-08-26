@@ -54,3 +54,4 @@
 (package! tldr)
 (package! alert)
 (package! git-auto-commit-mode)
+(package! rose-pine-theme)

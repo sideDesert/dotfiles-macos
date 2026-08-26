@@ -132,6 +132,7 @@
   ;; this modifier to both `std` and standard-library types such as `string`.
   '(lsp-face-semhl-default-library :inherit nil :foreground unspecified :weight normal)
   '(lsp-face-semhl-class :foreground "#7FB4CA" :weight normal)
+  '(lsp-face-semhl-method :foreground "#7FB4CA" :weight normal)
   ;; clangd also marks ordinary declarations as `interface`; keep this
   ;; modifier neutral so it cannot recolor every declared variable.
   '(lsp-face-semhl-interface :inherit nil :foreground unspecified :weight normal)

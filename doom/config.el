@@ -126,7 +126,7 @@
 
 ;; C++ semantic highlighting: use distinct Kanagawa colors for each symbol kind.
 (custom-set-faces!
-  '(lsp-face-semhl-macro :foreground "#FFA066" :weight normal)
+  '(lsp-face-semhl-macro :foreground "#E6C384" :weight normal)
   '(lsp-face-semhl-namespace :foreground "#FFA066" :weight normal)
   ;; Do not give default-library tokens their own foreground: clangd applies
   ;; this modifier to both `std` and standard-library types such as `string`.

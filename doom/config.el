@@ -134,7 +134,7 @@
   '(lsp-face-semhl-class :foreground "#98BB6C" :weight normal)
   '(lsp-face-semhl-type :foreground "#7FB4CA" :weight normal)
   '(lsp-face-semhl-variable :foreground "#DCD7BA" :weight normal)
-  '(lsp-face-semhl-parameter :foreground "#7FB4CA" :weight normal)
+  '(lsp-face-semhl-parameter :foreground "#E46876" :weight normal)
   '(lsp-face-semhl-number :foreground "#E6C384" :weight normal)
   '(lsp-face-semhl-string :foreground "#E6C384" :weight normal))
 
@@ -148,13 +148,18 @@
 
 ;; Clangd reports these identifiers using broad semantic categories, so keep
 ;; these two project-specific names visually distinct with targeted rules.
-(after! cc-mode
-  (dolist (mode '(c++-mode c++-ts-mode))
-    (font-lock-add-keywords
-     mode
-     '(("\\_<page_id_t\\_>" (0 'siddarth/cpp-type-alias prepend))
-       ("\\_<FULL_INDEX_TEMPLATE_ARGUMENTS\\_>"
-        (0 'siddarth/cpp-template-macro prepend))))))
+(defun siddarth/configure-cpp-specific-colors ()
+  "Apply project-specific C++ colors after major-mode setup."
+  (font-lock-add-keywords
+   nil
+   '(("\\_<page_id_t\\_>" (0 'siddarth/cpp-type-alias prepend))
+     ("\\_<FULL_INDEX_TEMPLATE_ARGUMENTS\\_>"
+      (0 'siddarth/cpp-template-macro prepend)))
+   'append)
+  (font-lock-flush))
+
+(add-hook 'c++-mode-hook #'siddarth/configure-cpp-specific-colors)
+(add-hook 'c++-ts-mode-hook #'siddarth/configure-cpp-specific-colors)
 
 ;; Keep Doom's default and fixed-pitch faces on the installed JetBrains Mono
 ;; Nerd Font build. The plain "JetBrains Mono" family is not installed here.

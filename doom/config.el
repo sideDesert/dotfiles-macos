@@ -124,6 +124,9 @@
 
 (setq doom-theme 'kanagawa-wave)
 
+(use-package! org-modern
+  :hook (org-mode . org-modern-mode))
+
 ;; Emacs Plus's frame-transparency patch provides real macOS backdrop blur.
 ;; Keep this scoped to that build so regular Emacs never falls back to plain,
 ;; unblurred transparency.

@@ -58,6 +58,7 @@
   :recipe (:host github :repo "donniebreve/rose-pine-doom-emacs"
            :files ("*.el")))
 (package! kanagawa-themes)
+(package! org-modern)
 
 ;; Doom's cc module supports ccls, but this setup deliberately uses clangd.
 (package! ccls :disable t)

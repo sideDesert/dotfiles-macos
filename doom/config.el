@@ -186,6 +186,15 @@
     "C-S-l" #'enlarge-window-horizontally
     "a"   #'treemacs-create-file))
 
+;; Treemacs locks its side-window width by default. The resize commands were
+;; correctly bound, but the window refused to honour them.
+(after! treemacs
+  (setq treemacs-width-is-initially-locked nil)
+  (add-hook 'treemacs-mode-hook
+            (lambda ()
+              (dolist (window (get-buffer-window-list (current-buffer) nil t))
+                (set-window-parameter window 'window-size-fixed nil)))))
+
 ;; ghostel (libghostty-in-Emacs) puts terminal buffers in evil *insert*
 ;; state by default, and evil-ghostel forwards C-h/j/k/l straight to the
 ;; PTY there (C-k/C-l are explicit readline passthroughs, C-j isn't in

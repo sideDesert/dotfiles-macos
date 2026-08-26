@@ -128,6 +128,7 @@
 (custom-set-faces!
   '(lsp-face-semhl-macro :foreground "#FFA066" :weight normal)
   '(lsp-face-semhl-namespace :foreground "#FFA066" :weight normal)
+  '(lsp-face-semhl-default-library :foreground "#FFA066" :weight normal)
   '(lsp-face-semhl-class :foreground "#98BB6C" :weight normal)
   '(lsp-face-semhl-type :foreground "#98BB6C" :weight normal)
   '(lsp-face-semhl-variable :foreground "#DCD7BA" :weight normal)

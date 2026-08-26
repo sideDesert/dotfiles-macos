@@ -130,9 +130,9 @@
   '(lsp-face-semhl-namespace :foreground "#FFA066" :weight normal)
   '(lsp-face-semhl-default-library :foreground "#FFA066" :weight normal)
   '(lsp-face-semhl-class :foreground "#98BB6C" :weight normal)
-  '(lsp-face-semhl-type :foreground "#98BB6C" :weight normal)
+  '(lsp-face-semhl-type :foreground "#7FB4CA" :weight normal)
   '(lsp-face-semhl-variable :foreground "#DCD7BA" :weight normal)
-  '(lsp-face-semhl-parameter :foreground "#E46876" :weight normal)
+  '(lsp-face-semhl-parameter :foreground "#7FB4CA" :weight normal)
   '(lsp-face-semhl-number :foreground "#E6C384" :weight normal)
   '(lsp-face-semhl-string :foreground "#E6C384" :weight normal))
 

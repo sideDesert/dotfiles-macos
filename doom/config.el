@@ -511,6 +511,11 @@
   (map! "s-r" #'siddarth/toggle-terminal-sidebar
         "s-R" #'siddarth/toggle-agent-terminals-sidebar))
 
+;; These commands are useful before a terminal buffer exists too, so keep the
+;; shortcuts global instead of making them depend on Ghostel having loaded.
+(map! "s-r" #'siddarth/toggle-terminal-sidebar
+      "s-R" #'siddarth/toggle-agent-terminals-sidebar)
+
 ;; Alternative window-resize bindings in normal state: SPC w <, >, -, and +.
 (map! :leader
       :prefix ("w" . "window")

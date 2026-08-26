@@ -55,4 +55,4 @@
 (package! alert)
 (package! git-auto-commit-mode)
 (package! rose-pine-theme
-  :recipe (:host github :repo "rose-pine/emacs"))
+  :recipe (:host github :repo "rose-pine/rose-pine-theme"))

@@ -144,6 +144,26 @@
 
 (setq doom-theme 'kanagawa-wave)
 
+;; Emacs Plus's frame-transparency patch provides real macOS backdrop blur.
+;; Keep this scoped to that build so regular Emacs never falls back to plain,
+;; unblurred transparency.
+(when (or (bound-and-true-p ns-emacs-plus-version)
+          (string-match-p "/emacs-plus@31/" invocation-directory))
+  (defun siddarth/apply-macos-glass (&optional frame)
+    "Apply frosted-glass styling to FRAME."
+    (with-selected-frame (or frame (selected-frame))
+      (set-frame-parameter nil 'alpha-background 0.85)
+      (set-frame-parameter nil 'ns-background-blur 30)
+      (set-frame-parameter nil 'ns-alpha-elements '(ns-alpha-all))))
+
+  ;; Blur must exist while the native NSWindow is being created.
+  (add-to-list 'default-frame-alist '(alpha-background . 0.85))
+  (add-to-list 'default-frame-alist '(ns-background-blur . 30))
+  (add-to-list 'default-frame-alist '(ns-alpha-elements ns-alpha-all))
+  (add-hook 'after-make-frame-functions #'siddarth/apply-macos-glass)
+  (when (display-graphic-p)
+    (siddarth/apply-macos-glass)))
+
 ;; Magit's `executable-find "git"' walks the full PATH on macOS (Homebrew,
 ;; /usr/bin shim that forwards to Xcode CLT, etc.) on every invocation,
 ;; adding several seconds to magit-status/commit. Pinning the executable

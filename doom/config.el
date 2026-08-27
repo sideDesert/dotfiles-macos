@@ -161,9 +161,13 @@
 (add-hook 'c++-mode-hook #'siddarth/configure-cpp-specific-colors)
 (add-hook 'c++-ts-mode-hook #'siddarth/configure-cpp-specific-colors)
 
-;; Keep Doom's default and fixed-pitch faces on the installed JetBrains Mono
-;; Nerd Font build. The plain "JetBrains Mono" family is not installed here.
-(setq doom-font (font-spec :family "JetBrainsMono Nerd Font" :size 14))
+;; Use the non-italic face explicitly. The plain "JetBrains Mono" family is
+;; not installed here, and leaving the slant unspecified can make font
+;; fallback look italic across the whole frame.
+(setq doom-font (font-spec :family "JetBrainsMono Nerd Font"
+                           :size 14
+                           :weight 'regular
+                           :slant 'normal))
 
 (use-package! org-modern
   :after org

@@ -22,6 +22,7 @@
 ;; libgccjit shells out to gcc for linking and can't find libemutls_w.a,
 ;; which lives under Homebrew gcc's lib dir rather than a standard path.
 (add-to-list 'exec-path "/Library/TeX/texbin")
+(add-to-list 'exec-path "/opt/homebrew/opt/lldb/bin")
 
 (after! tex-site
   (TeX-modes-set 'TeX-modes TeX-modes))

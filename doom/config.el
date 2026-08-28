@@ -166,7 +166,7 @@
 ;; fallback look italic across the whole frame.
 (setq doom-font (font-spec :family "JetBrainsMono Nerd Font"
                            :size 14
-                           :weight 'regular
+                           :weight 'light
                            :slant 'normal))
 
 (use-package! org-modern

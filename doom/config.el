@@ -474,6 +474,10 @@
 ;; A persistent terminal belongs in a side window, not in the current editing
 ;; window. Cmd-R toggles it; use `codex', `claude', or `opencode' there.
 (after! ghostel
+  ;; The parent Emacs currently inherits NO_COLOR=1, which makes TUIs such
+  ;; as Codex disable styling despite Ghostel advertising truecolor.
+  (setq ghostel-environment '("NO_COLOR"))
+
   (defconst siddarth/terminal-buffer-name "*terminal*")
   (defvar siddarth/terminal-sidebar-buffer nil)
 

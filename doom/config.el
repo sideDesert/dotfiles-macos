@@ -186,6 +186,21 @@
         org-modern-replace-stars "○◉◈◇✳")
   (global-org-modern-mode))
 
+(use-package! dape
+  :custom
+  (dape-buffer-window-management 'right))
+
+(use-package! repeat
+  :custom
+  (repeat-mode +1))
+
+;; Homebrew LLVM adapter for C/C++/Rust
+(let ((llvm-bin "/opt/homebrew/opt/llvm@15/bin"))
+  (when (file-directory-p llvm-bin)
+    (add-to-list 'exec-path llvm-bin)
+    (setenv "PATH" (concat llvm-bin path-separator (getenv "PATH")))))
+
+
 ;; Emacs Plus's frame-transparency patch provides real macOS backdrop blur.
 ;; Keep this scoped to that build so regular Emacs never falls back to plain,
 ;; unblurred transparency.

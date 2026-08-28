@@ -62,3 +62,4 @@
 
 ;; Doom's cc module supports ccls, but this setup deliberately uses clangd.
 (package! ccls :disable t)
+(package! dape)

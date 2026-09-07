@@ -49,9 +49,10 @@
 ;; walks up to the actual project markers instead of asking.
 (after! lsp-mode
   (setq lsp-auto-guess-root t
-        ;; Let clangd distinguish identifiers by their resolved C++ role, rather
-        ;; than relying only on the lexical syntax that font-lock can see.
-        lsp-semantic-tokens-enable t))
+        ;; Keep syntax colors stable and readable.  Tree-sitter/font-lock is
+        ;; responsible for presentation; clangd should provide navigation and
+        ;; diagnostics without recoloring every identifier by inferred role.
+        lsp-semantic-tokens-enable nil))
 
 ;; Prefer Homebrew LLVM when installed; otherwise retain the working macOS
 ;; clangd.  clangd resolves this relative directory from each project root.
@@ -124,25 +125,6 @@
       (add-hook 'after-save-hook #'my/org-agenda-to-appt-with-repeaters nil t))))
 
 (setq doom-theme 'kanagawa-wave)
-
-;; C++ semantic highlighting: use distinct Kanagawa colors for each symbol kind.
-(custom-set-faces!
-  '(lsp-face-semhl-macro :foreground "#E6C384" :weight normal)
-  '(lsp-face-semhl-namespace :foreground "#FFA066" :weight normal)
-  ;; Do not give default-library tokens their own foreground: clangd applies
-  ;; this modifier to both `std` and standard-library types such as `string`.
-  '(lsp-face-semhl-default-library :inherit nil :foreground unspecified :weight normal)
-  '(lsp-face-semhl-class :foreground "#7FB4CA" :weight normal)
-  '(lsp-face-semhl-method :foreground "#7FB4CA" :weight normal)
-  ;; clangd also marks ordinary declarations as `interface`; keep this
-  ;; modifier neutral so it cannot recolor every declared variable.
-  '(lsp-face-semhl-interface :inherit nil :foreground unspecified :weight normal)
-  '(lsp-face-semhl-definition :inherit nil :foreground unspecified :weight normal)
-  '(lsp-face-semhl-type :foreground "#98BB6C" :weight normal)
-  '(lsp-face-semhl-variable :foreground "#DCD7BA" :weight normal)
-  '(lsp-face-semhl-parameter :foreground "#E46876" :weight normal)
-  '(lsp-face-semhl-number :foreground "#E6C384" :weight normal)
-  '(lsp-face-semhl-string :foreground "#E6C384" :weight normal))
 
 (defface siddarth/cpp-template-macro
   '((t (:foreground "#7AA89F" :weight normal)))

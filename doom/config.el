@@ -126,6 +126,11 @@
 
 (setq doom-theme 'kanagawa-wave)
 
+;; Kanagawa's default blue function face is too close to this background.
+;; Keep the theme, but make callable names easy to scan.
+(custom-set-faces!
+  '(font-lock-function-name-face :foreground "#E6C384" :weight normal))
+
 (defface siddarth/cpp-template-macro
   '((t (:foreground "#7AA89F" :weight normal)))
   "Face for the B+ tree template macro.")

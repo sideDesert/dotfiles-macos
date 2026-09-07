@@ -124,12 +124,7 @@
     (lambda ()
       (add-hook 'after-save-hook #'my/org-agenda-to-appt-with-repeaters nil t))))
 
-(setq doom-theme 'kanagawa-wave)
-
-;; Kanagawa's default blue function face is too close to this background.
-;; Keep the theme, but make callable names easy to scan.
-(custom-set-faces!
-  '(font-lock-function-name-face :foreground "#E6C384" :weight normal))
+(setq doom-theme 'doom-rose-pine-moon)
 
 (defface siddarth/cpp-template-macro
   '((t (:foreground "#7AA89F" :weight normal)))
